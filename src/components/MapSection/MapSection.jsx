@@ -4,8 +4,11 @@ import { Map } from '@bydavito/map-core';
 import WorkMarker from './WorkMarker';
 import CustomToolTip from './CustomToolTip';
 import GridOverlay from './GridOverlay';
+import FilterPanel from './FilterPanel';
 import { useWorks } from '../../hooks/useWorks';
 import { useCities } from '../../hooks/useCities';
+import { useFilters } from '../../hooks/useFilters';
+import { useFilteredWorks } from '../../hooks/useFilteredWorks';
 import { getCityFromWorks, workToMapPoint, formatCityData } from '../../utils/geo';
 import styles from './MapSection.module.css';
 
@@ -16,6 +19,7 @@ import styles from './MapSection.module.css';
 function MapSection() {
   const { works, loading: loadingWorks, error: errorWorks } = useWorks();
   const { cities, loading: loadingCities } = useCities();
+  const { filters, isFilterPanelOpen, setFilters, toggleFilterPanel, closeFilterPanel } = useFilters();
   const mapRef = useRef(null);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
@@ -26,9 +30,12 @@ function MapSection() {
   const loading = loadingWorks || loadingCities;
   const error = errorWorks;
 
-  // Convertimos las obras a puntos del mapa y calculamos el centro ideal
+  // Filtrar obras según filtros aplicados
+  const filteredWorks = useFilteredWorks(works, filters);
+
+  // Convertimos las obras filtradas a puntos del mapa y calculamos el centro ideal
   const { points, cityBounds } = useMemo(() => {
-    const mapPoints = (works || [])
+    const mapPoints = (filteredWorks || [])
       .filter((w) => w.Latitud && w.Longitud)
       .map(workToMapPoint);
 
@@ -49,7 +56,7 @@ function MapSection() {
     console.log('Final cityBounds:', bounds);
 
     return { points: mapPoints, cityBounds: bounds };
-  }, [works, cities]);
+  }, [filteredWorks, cities]);
 
   useEffect(() => {
     // Si isActive cambia, forzamos un resize del mapa para que ajuste el canvas
@@ -181,8 +188,27 @@ function MapSection() {
     <section
       className={`${styles.mapSection}`}
     >
+      {/* Panel de filtros */}
+      <FilterPanel
+        isOpen={isFilterPanelOpen}
+        onClose={closeFilterPanel}
+        onApplyFilters={setFilters}
+        isMobile={isMobile}
+      />
+
     <div id="mapa"
-      className={`${styles.mapContainer} ${isActive && isMobile ? styles.fullscreen : ''}`}>
+      className={`${styles.mapContainer} ${isActive && isMobile ? styles.fullscreen : ''} ${isFilterPanelOpen && !isMobile ? styles.mapShifted : ''}`}>
+      {/* Botón de filtros */}
+      <button
+        className={`${styles.filterBtn} ${isActive ? styles.filterVisible : ''} ${isFilterPanelOpen ? styles.filterBtnActive : ''}`}
+        onClick={toggleFilterPanel}
+        aria-label="Abrir filtros"
+      >
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6H21M6 12H18M9 18H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </button>
+
       <div className={styles.mapWrapper}>
         {loading && (
           <div className={styles.loadingOverlay}>

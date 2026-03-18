@@ -22,10 +22,153 @@
   object-fit: cover;
   object-position: center;
   transition: transform var(--transition-slow);
+  cursor: pointer;
 }
 
 .mainImage:hover {
   transform: scale(1.02);
+}
+
+/* ─── Navigation Buttons ─────────────────────────────────────────── */
+.navContainer {
+  transition: opacity 0.3s ease;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  opacity: 0;
+  z-index: 10;
+}
+
+.mainImageContainer:hover .navButton,
+.modalContent:hover .navButton {
+  opacity: 1;
+}
+
+.navButton:hover {
+  color: var(--color-red);
+  text-shadow: 0 0 8px var(--color-red);
+}
+
+.navButtonLeft {
+  left: var(--spacing-sm);
+}
+
+.navButtonRight {
+  right: var(--spacing-sm);
+}
+
+/* ─── Modal ─────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  z-index: 1000;
+}
+
+.modalContent {
+  position: relative;
+  width: 1000px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.modalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background var(--transition-fast);
+  z-index: 1010;
+}
+
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.zoomBtn {
+  position: absolute;
+  bottom: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 16px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+  z-index: 10;
+}
+
+.zoomBtn:hover:not(:disabled) {
+  color: var(--color-red);
+  scale: 1.2;
+  font-size: 18px;
+  text-shadow: 0 0 8px var(--color-red);
+}
+
+.zoomBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zoomBtn:nth-of-type(1) {
+  right: 10px;
+  bottom: 10px;
+}
+
+.zoomBtn:nth-of-type(2) {
+  right: 10px;
+  bottom: 60px;
 }
 
 /* ─── Thumbnails ─────────────────────────────────────────── */
@@ -35,6 +178,7 @@
   overflow-x: auto;
   padding-bottom: var(--spacing-sm); /* Espacio para el scrollbar */
   scrollbar-width: thin;
+  transition: opacity 0.3s ease;
 }
 
 .thumbnailBtn {

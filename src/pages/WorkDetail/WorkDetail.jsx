@@ -57,7 +57,7 @@ function WorkDetailPage() {
               <h2 className={styles.sectionTitle}>Descripción del proyecto</h2>
               <div className={styles.description}>
                 {work.Descripcion ? (
-                  <p>{work.Descripcion}</p>
+                  <div className={styles.descriptionText}>{work.Descripcion}</div>
                 ) : (
                   <p className={styles.emptyText}>No hay descripción disponible para esta obra.</p>
                 )}
