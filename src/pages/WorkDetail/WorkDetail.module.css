@@ -1,0 +1,164 @@
+.detailPage {
+  padding-top: calc(var(--navbar-height) + var(--spacing-2xl));
+  padding-bottom: var(--spacing-3xl);
+  min-height: 100dvh;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+}
+
+/* ─── State Screens ─────────────────────────────────────── */
+.stateScreen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xl);
+}
+
+.stateScreen p {
+  font-family: var(--font-body);
+  color: var(--color-gray);
+}
+
+.stateScreen a {
+  color: var(--color-red);
+  text-decoration: underline;
+  margin-top: var(--spacing-sm);
+}
+
+/* ─── Main Column ───────────────────────────────────────── */
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.breadcrumb a {
+  color: var(--color-dark);
+  transition: color var(--transition-fast);
+}
+
+.breadcrumb a:hover {
+  color: var(--color-red);
+}
+
+.separator {
+  color: var(--color-gray-light);
+}
+
+.current {
+  color: var(--color-gray);
+  font-weight: 500;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.title {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.location {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--color-gray);
+  font-weight: 300;
+}
+
+/* Specs Grid */
+.infoSection {
+  margin-top: var(--spacing-xl);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  color: var(--color-dark);
+}
+
+.description p {
+  color: var(--color-dark);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+
+.emptyText {
+  color: var(--color-gray) !important;
+  font-style: italic;
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-gray-light);
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specLabel {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.specValue {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-dark);
+  letter-spacing: 0.05em;
+}
+
+/* ─── Side Column ───────────────────────────────────────── */
+.sideColumn {
+  position: sticky;
+  top: calc(var(--navbar-height) + var(--spacing-xl));
+}
+
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3xl);
+  }
+  
+  .sideColumn {
+    position: relative;
+    top: auto;
+  }
+}

@@ -1,0 +1,133 @@
+.footer {
+  background: linear-gradient(
+    135deg,
+    rgb(0, 0, 0) 0%,
+    rgba(0,0,0,0.7) 60%,
+    rgba(0,0,0,0.5) 100%
+  );
+  border-top: 3px solid var(--color-red);
+  padding-top: var(--spacing-3xl);
+  color: var(--color-white);
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    150% 150% at 50% 30%,
+    rgba(232, 39, 42, 0.685) 0%,
+    rgba(0, 0, 0, 0.514) 50%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-3xl);
+  margin-bottom: var(--spacing-3xl);
+}
+
+/* ─── Contact Info ──────────────────────────────────────── */
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.logosContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.mediumLogo {
+  height: 55px; /* Tamaño mediano según pedido */
+  width: auto;
+  object-fit: contain;
+}
+
+.addressBlock p {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-white);
+  line-height: 1.5;
+}
+
+.addressBlock strong {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-white);
+}
+
+.socials {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
+}
+
+.socialLink {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-dark);
+  position: relative;
+  transition: color var(--transition-fast);
+}
+
+.socialLink::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-red);
+  transition: width var(--transition-normal);
+}
+
+.socialLink:hover {
+  color: var(--color-red);
+}
+
+.socialLink:hover::after {
+  width: 100%;
+}
+
+/* ─── Bottom Bar ────────────────────────────────────────── */
+.bottomBar {
+  background: var(--color-dark);
+  color: var(--color-white);
+  padding: var(--spacing-md) 0;
+}
+
+.bottomContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-2xl);
+  }
+  
+  .logosContainer {
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+  }
+}

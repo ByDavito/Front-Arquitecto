@@ -1,0 +1,72 @@
+.mapSection {
+background-size: 100% 100%;
+background-position: 0px 0px,0px 0px;
+background-image: radial-gradient(150% 150% at 49% 69%, #000000FF 17%, #00000000 48%),linear-gradient(0deg, #000000FF 0%, #00000000 50%);
+  padding-top: 10rem;
+  padding-bottom: 10rem;
+}
+
+.mapContainer {
+  position: relative;
+  border-radius: 25px;
+  border: 3px solid #000;
+  outline: 3px solid var(--color-red);
+  box-shadow: 0 0 0 6px #000;
+  width: 100%;
+  height: 93vh; /* Altura inicial en página as grid */
+  min-height: 600px;
+  background: rgba(20, 20, 20, 0.836); /* Semi-transparente para ver imágenes del hero */
+  backdrop-filter: blur(2px); /* Ligero blur para mejor visualización */
+  transition: all var(--transition-slow);
+  overflow: hidden;
+  
+  z-index: 10;
+  margin: 0 auto; /* Centrado */
+}
+
+@media (min-width: 1024px) {
+  .mapContainer {
+    width: 50vw;
+  }
+}
+
+/* Transición a fullscreen */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw !important;
+  height: 100dvh !important;
+  z-index: 2000; /* Por encima del navbar */
+  min-height: auto;
+  margin: 0;
+}
+
+.mapWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Debajo de la grilla */
+}
+
+/* Overlays para carga y error */
+.loadingOverlay, .errorOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 20, 20, 0.7); /* Semi-transparente */
+  z-index: 100;
+}
+
+.errorOverlay p {
+  color: var(--color-red);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* Ajustes globales para los contenedores webgl inyectados por la librería */
+:global(.maplibregl-canvas) {
+  outline: none;
+}

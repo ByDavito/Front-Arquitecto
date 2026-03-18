@@ -1,0 +1,77 @@
+.viewerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+/* ─── Main Image ─────────────────────────────────────────── */
+.mainImageContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-gray-light);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--transition-slow);
+}
+
+.mainImage:hover {
+  transform: scale(1.02);
+}
+
+/* ─── Thumbnails ─────────────────────────────────────────── */
+.thumbnailContainer {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding-bottom: var(--spacing-sm); /* Espacio para el scrollbar */
+  scrollbar-width: thin;
+}
+
+.thumbnailBtn {
+  flex: 0 0 100px;
+  height: 60px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all var(--transition-fast);
+  opacity: 0.6;
+}
+
+.thumbnailBtn:hover {
+  opacity: 0.9;
+}
+
+.thumbnailActive {
+  opacity: 1;
+  border-color: var(--color-red);
+}
+
+.thumbnailImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── Empty State ─────────────────────────────────────────── */
+.emptyState {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-bg);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-gray);
+  color: var(--color-gray);
+  font-family: var(--font-body);
+}

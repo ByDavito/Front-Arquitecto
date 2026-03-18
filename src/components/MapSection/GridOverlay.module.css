@@ -1,0 +1,159 @@
+.gridContainer {
+  position: absolute;
+  inset: 0;
+  z-index: 50; /* Sobre el mapa pero debajo de popups */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 12px;
+  padding: 12px;
+  pointer-events: auto; /* Para capturar clicks por encima del mapa */
+  transition: opacity var(--transition-slow), visibility var(--transition-slow);
+}
+
+/* Cuando se expande, la grilla desaparece suavemente */
+.gridHidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ─── Celdas de la Grilla ────────────────────────────────────── */
+.cell {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05); /* Muy sutil */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color var(--transition-normal);
+  backdrop-filter: blur(2px);
+}
+
+.cell:hover {
+  border-color: var(--color-red);
+}
+
+.cellHover {
+  position: absolute;
+  inset: 0;
+  background: var(--color-red);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.cell:hover .cellHover {
+  opacity: 0.1;
+}
+
+/* Tipografía de las celdas N O C E S */
+.cell span {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 15vw, 12rem);
+  color: var(--color-white);
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5), 0 0 20px rgba(0,0,0,0.3);
+  z-index: 2;
+  transition: transform var(--transition-normal), color var(--transition-normal);
+  /* Text-stroke effect to match design where letters appear transparent with white stroke */
+  -webkit-text-stroke: 4px var(--color-white);
+  color: transparent;
+}
+
+.cell:hover span {
+  transform: scale(1.05);
+  -webkit-text-stroke: 4px var(--color-red);
+}
+
+/* Estilos específicos si se requiere ajustar visualmente alguna celda */
+.cellN span { margin-top: 10%; }
+.cellS span { margin-bottom: 10%; }
+.cellEmpty span { display: none; }
+
+
+/* Textos decorativos en esquinas */
+.cornerText {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  color: var(--color-white);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  pointer-events: none;
+  z-index: 3;
+}
+
+
+/* ─── Fullscreen UI ────────────────────────────────────────── */
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 100;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.closeBtn svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.closeBtn:hover svg {
+  transform: rotate(90deg);
+}
+
+.closeVisible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.interactionHint {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  color: var(--color-white);
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  pointer-events: none;
+  animation: fadeIn 0.8s ease forwards 0.5s;
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .cell span {
+    -webkit-text-stroke: 2px var(--color-white);
+  }
+  .cell:hover span {
+    -webkit-text-stroke: 2px var(--color-red);
+  }
+}
