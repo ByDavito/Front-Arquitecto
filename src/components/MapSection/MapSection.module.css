@@ -1,11 +1,17 @@
 .mapSection {
-background-size: 100% 100%;
-background-position: 0px 0px,0px 0px;
-background-image: radial-gradient(150% 150% at 49% 69%, #000000FF 17%, #00000000 48%),linear-gradient(0deg, #000000FF 0%, #00000000 50%);
+  background-size: 100% 100%;
+  background-position: 0px 0px,0px 0px;
+  background-image: radial-gradient(150% 150% at 49% 69%, #000000FF 17%, #00000000 48%),linear-gradient(0deg, #000000FF 0%, #00000000 50%);
   padding-top: 10rem;
   padding-bottom: 10rem;
   position: relative;
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .mapSection {
+    display: block;
+  }
 }
 
 .layoutWithFilters {
@@ -128,6 +134,10 @@ background-image: radial-gradient(150% 150% at 49% 69%, #000000FF 17%, #00000000
 }
 
 @media (max-width: 768px) {
+  .mapContainer {
+    width: 100vw;
+  }
+
   .filterBtn {
     top: 15px;
     left: 15px;

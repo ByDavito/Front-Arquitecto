@@ -46,20 +46,23 @@
 }
 
 .filterPanel.mobile {
-  width: 100%;
+  width: 90%;
+  max-width: 400px;
   height: auto;
   max-height: 80vh;
-  top: auto;
-  bottom: 0;
-  left: 0;
-  transform: translateY(100%);
+  
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -100%);
   border: 3px solid #000;
-  border-top: 3px solid var(--color-red);
-  border-bottom: none;
+  border-bottom: 3px solid var(--color-red);
+  z-index: 1500000;
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
 }
 
 .filterPanel.mobile.open {
-  transform: translateY(0);
+  opacity: 1;
+  transform: translate(-50%, 30%);
 }
 
 .header {
@@ -236,7 +239,7 @@
   font-family: var(--font-body);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+
 }
 
 .clearBtn {
