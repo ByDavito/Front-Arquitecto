@@ -95,12 +95,12 @@
   background: var(--color-black);
   color: var(--color-white);
   border: 1px solid rgba(255,255,255,0.2);
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
+  padding: 15px 15px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.85rem;
+  font-size: 1rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-family: var(--font-body);

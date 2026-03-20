@@ -2,6 +2,7 @@
   padding-top: calc(var(--navbar-height) + var(--spacing-2xl));
   padding-bottom: var(--spacing-3xl);
   min-height: 100dvh;
+  overflow-x: hidden;
 }
 
 .gridContainer {
@@ -157,9 +158,62 @@
     grid-template-columns: 1fr;
     gap: var(--spacing-3xl);
   }
-  
+
   .sideColumn {
     position: relative;
     top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .detailPage {
+    padding-top: calc(var(--navbar-height) + var(--spacing-xl));
+    padding-bottom: var(--spacing-2xl);
+  }
+
+  .gridContainer {
+    gap: var(--spacing-2xl);
+  }
+
+  .mainColumn {
+    gap: var(--spacing-lg);
+  }
+
+  .specsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 576px) {
+  .detailPage {
+    padding-top: calc(var(--navbar-height) + var(--spacing-lg));
+  }
+
+  .title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .specsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .specItem {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .specValue {
+    margin-left: auto;
+  }
+
+  .specLabel {
+    font-size: 0.7rem;
+  }
+
+  .specValue {
+    font-size: 1rem;
   }
 }

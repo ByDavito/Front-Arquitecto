@@ -7,12 +7,16 @@ import styles from './Navbar.module.css'
  * Navbar — Barra de navegación superior.
  * Comportamiento: transparente sobre el hero, oscura al hacer scroll.
  * En desktop: links a la derecha. Mobile: menú hamburguesa.
+ * @param {boolean} isMapLoading - Indica si el mapa está cargando
  */
-function Navbar() {
+function Navbar({ isMapLoading = false }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const isHome = location.pathname === '/'
+
+  // Ocultar navbar completamente durante la carga
+  const isVisible = !isMapLoading
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -30,7 +34,7 @@ function Navbar() {
   }
 
   return (
-    <nav className={`${styles.navbar} ${scrolled || !isHome ? styles.scrolled : ''}`}>
+    <nav className={`${styles.navbar} ${scrolled || !isHome ? styles.scrolled : ''} ${!isVisible ? styles.hidden : ''}`}>
       <div className={styles.inner}>
         {/* Logo */}
         <Link to="/" className={styles.logo}>

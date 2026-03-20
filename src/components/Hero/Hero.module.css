@@ -105,12 +105,76 @@
   width: clamp(200px, 35vw, 480px);
   height: auto;
   filter: brightness(0) invert(1) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
-  transition: opacity var(--transition-normal);
+  transition: opacity var(--transition-normal), transform 0.3s ease;
+  transform: scale(1);
+}
+
+/* Animación breathing para el logo mientras carga el mapa */
+.logoBreathing {
+  animation: breathing 2s ease-in-out infinite;
+  animation-fill-mode: both;
+}
+
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.85;
+  }
+}
+
+/* Transición suave cuando termina la carga */
+.logoBreathingEnding {
+  animation: breathingEnd 0.5s ease-out forwards;
+}
+
+@keyframes breathingEnd {
+  from {
+    transform: scale(1.05);
+    opacity: 0.85;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Hero desenfocado mientras carga el mapa - solo las imágenes, no el logo */
+.slidesContainer {
+  transition: filter 0.8s ease, transform 0.8s ease;
+}
+
+.heroBlurred .slidesContainer {
+  filter: blur(8px);
+  transform: scale(1.02);
+}
+
+/* Evitar scroll mientras carga */
+.heroBlurred {
+  overflow: hidden;
 }
 
 .logoHidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.logoFocused {
+  animation: focusIn 0.8s ease forwards;
+}
+
+@keyframes focusIn {
+  from {
+    filter: blur(4px);
+    transform: scale(1.05);
+  }
+  to {
+    filter: blur(0);
+    transform: scale(1);
+  }
 }
 
 .tagline {
@@ -120,6 +184,14 @@
   color: var(--color-white);
   text-transform: uppercase;
   margin-top: var(--spacing-md);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease 1.2s, transform 0.8s ease 1.2s;
+}
+
+.tagline.hidden {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .subtitle {
@@ -128,6 +200,14 @@
   text-transform: uppercase;
   color: var(--color-red);
   font-weight: 500;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 1.4s ease 1.8s, transform 1.4s ease 1.8s;
+}
+
+.subtitle.hidden {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 /* ─── Dots ────────────────────────────────────────────────── */

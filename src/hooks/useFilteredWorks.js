@@ -55,6 +55,20 @@ export function useFilteredWorks(works, filters) {
         }
       }
 
+      // Filtro por habitaciones
+      if (filters.habitaciones !== null && filters.habitaciones !== undefined) {
+        if (work.Habitaciones !== filters.habitaciones) {
+          return false;
+        }
+      }
+
+      // Filtro por baños
+      if (filters.banos !== null && filters.banos !== undefined) {
+        if (work.Banos !== filters.banos) {
+          return false;
+        }
+      }
+
       return true;
     });
   }, [works, filters]);

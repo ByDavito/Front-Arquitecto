@@ -15,8 +15,9 @@ import styles from './MapSection.module.css';
 /**
  * MapSection — Sección principal del mapa interactivo.
  * Incorpora la grilla 3x3 encimada y la activación del mapa.
+ * @param {function} onMapReady - Callback cuando el mapa está listo para navegar
  */
-function MapSection() {
+function MapSection({ onMapReady }) {
   const { works, loading: loadingWorks, error: errorWorks } = useWorks();
   const { cities, loading: loadingCities } = useCities();
   const { filters, isFilterPanelOpen, setFilters, toggleFilterPanel, closeFilterPanel } = useFilters();
@@ -57,6 +58,17 @@ function MapSection() {
 
     return { points: mapPoints, cityBounds: bounds };
   }, [filteredWorks, cities]);
+
+  // Notificar cuando el mapa esté listo
+  useEffect(() => {
+    if (!loading && cityBounds && onMapReady) {
+      // Pequeño delay para que la transición sea visible
+      const timer = setTimeout(() => {
+        onMapReady();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, cityBounds, onMapReady]);
 
   useEffect(() => {
     // Si isActive cambia, forzamos un resize del mapa para que ajuste el canvas

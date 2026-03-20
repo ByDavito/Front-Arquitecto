@@ -20,8 +20,9 @@ const INTERVAL = 5000
  * Hero — Sección hero de la landing.
  * Carrusel con transición fade, logo centrado y navegación.
  * Los dots solo aparecen cuando el usuario hace hover sobre el hero.
+ * @param {boolean} isMapLoading - Indica si el mapa está cargando
  */
-function Hero() {
+function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
   const [current, setCurrent] = useState(0)
   const [prev, setPrev] = useState(null)
   const [hovered, setHovered] = useState(false)
@@ -69,7 +70,7 @@ function Hero() {
   return (
     <section
       id="hero"
-      className={styles.hero}
+      className={`${styles.hero} ${isMapLoading ? styles.heroBlurred : ''}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -120,10 +121,10 @@ function Hero() {
          <img 
            src={logoImg} 
            alt="Depetris Saranz Boschetto" 
-           className={styles.logo} 
+           className={`${styles.logo} ${isMapLoading ? styles.logoBreathing : ''} ${isMapLoadingEnding ? styles.logoBreathingEnding : ''}`} 
          />
-         <p className={styles.tagline}>coordenadas | cardinales</p>
-         <p className={styles.subtitle}>orientamos tu inversión</p>
+         <p className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>coordenadas | cardinales</p>
+         <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>orientamos tu inversión</p>
        </div>
        {/* Espaciador para permitir scroll */}
        <div className={styles.heroContent} />

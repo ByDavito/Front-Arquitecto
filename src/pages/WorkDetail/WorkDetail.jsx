@@ -22,6 +22,8 @@ function WorkDetailPage() {
     return getNearbyWorks(work, works, 5); // top 5 más cercanas
   }, [work, works]);
 
+  console.log('Obra actual:', work);
+
   // Pantallas de estado global
   if (loadingWork) return <div className={styles.stateScreen}><div className="skeleton" style={{width: '200px', height: '40px'}}/></div>;
   if (errorWork) return <div className={styles.stateScreen}><p className="errorText">Error: {errorWork}</p><Link to="/">← Volver al inicio</Link></div>;
@@ -44,7 +46,7 @@ function WorkDetailPage() {
             {/* Cabecera */}
             <header className={styles.header}>
               <h1 className={styles.title}>{work.Nombre}</h1>
-              {work.ciudadNombre && <p className={styles.location}>{work.ciudadNombre}</p>}
+              {work.ciudadNombre && <p className={styles.location}>{work.ciudadNombre}{work.Barrio && `, ${work.Barrio}`}</p>}
             </header>
 
             {/* Galería (usa los medios del API) */}

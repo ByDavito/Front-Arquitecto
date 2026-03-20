@@ -1,9 +1,10 @@
 .filterPanel {
   background: rgba(20, 20, 20, 0.95);
   backdrop-filter: blur(10px);
-  border: 3px solid #000;
+ border: 2px solid #000;
+  outline: 1px solid var(--color-red);
+  box-shadow: 0 0 0 5px #000;
   border-radius: 8px;
-  box-shadow: 0 0 0 6px #000;
   display: flex;
   flex-direction: column;
   /* Estilos por defecto para móvil: flotante */
@@ -105,7 +106,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .filterGroup {
@@ -130,6 +131,7 @@
   color: #fff;
   font-family: var(--font-body);
   font-size: 0.9rem;
+  width: 100%;
 }
 
 .filterGroup input[type="text"]:focus,
@@ -137,6 +139,11 @@
   outline: none;
   border-color: var(--color-red);
   box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+}
+
+.filterGroup select option {
+  background: rgba(20, 20, 20, 0.95);
+  color: #fff;
 }
 
 .inputWrapper {
@@ -178,7 +185,7 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .checkboxLabel input[type="checkbox"] {
@@ -271,4 +278,140 @@
   .filterPanel:not(.mobile) {
     width: 250px;
   }
+}
+
+/* Nuevos estilos para inputs y checkboxes combinados */
+.inputsRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.inputWithIcon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.inputWithIcon label {
+  font-size: 0.8rem;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.inputContainer input[type="number"] {
+  width: 10px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  outline: none;
+  text-align: center;
+}
+
+/* Estilos para los botones de input number */
+.inputContainer input[type="number"]::-webkit-outer-spin-button,
+.inputContainer input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inputContainer input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Estilos personalizados para los botones */
+.inputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.numberButtons {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.25rem;
+}
+
+.incrementBtn,
+.decrementBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  width: 20px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background-color 0.2s;
+}
+
+.incrementBtn:hover,
+.decrementBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.incrementBtn {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px 2px 0 0;
+}
+
+.decrementBtn {
+  border-radius: 0 0 2px 2px;
+}
+
+.inputContainer input[type="number"]:focus {
+  outline: none;
+}
+
+.icon {
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.checkboxesColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0rem;
+  min-width: 80px;
+}
+
+.checkboxLabel {
+  font-size: 0.5rem;
+}
+
+/* Estilos para ranges unidos */
+.rangeRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rangeField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.rangeField label {
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.8rem;
 }

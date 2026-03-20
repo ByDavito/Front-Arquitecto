@@ -115,3 +115,22 @@
   color: var(--color-gray);
   font-size: 0.9rem;
 }
+
+/* ─── Mobile ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .list {
+    gap: var(--spacing-md);
+  }
+
+  .heading {
+    font-size: 1.25rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+  }
+}

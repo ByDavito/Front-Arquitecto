@@ -14,7 +14,7 @@
 :root {
   --color-black:        #1A1A1A;
   --color-dark:         #2D2D2D;
-  --color-red:          #E8272A;
+  --color-red:          #f53b2e;
   --color-red-dark:     #C0181B;
   --color-gray:         #9B9B9B;
   --color-gray-light:   #E5E5E5;
@@ -106,6 +106,18 @@ h1, h2, h3, h4, h5, h6 {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 var(--spacing-md);
+  }
 }
 
 .sr-only {
