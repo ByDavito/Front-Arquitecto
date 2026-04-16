@@ -27,10 +27,16 @@ function Footer() {
           </div>
           
           <div className={styles.socials}>
-            <a href="#" aria-label="Instagram" className={styles.socialLink}>Instagram</a>
-            <a href="#" aria-label="LinkedIn" className={styles.socialLink}>LinkedIn</a>
-            <a href="mailto:contacto@ejemplo.com" className={styles.socialLink}>Email</a>
+            <a href="https://www.instagram.com/depetris.saranz.boschetto/" aria-label="Instagram" className={styles.socialLink}>Instagram</a>
+            <a href="https://www.facebook.com/DepetrisSaranzBoschetto/" aria-label="Facebook" className={styles.socialLink}>Facebook</a>
+            <a href="mailto:arquitectura.nsd@gmail.com" aria-label="E-mail: arquitectura.nsd@gmail.com" className={styles.socialLink}>Email</a>
           </div>
+          
+          <div className={styles.contactDetails}>
+            <p>Morteros Bv. Illia 610</p>
+            <p>3562 443899</p>
+          </div>
+          
         </div>
 
         {/* Columna derecha vacía o para futuros usos */}

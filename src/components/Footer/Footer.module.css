@@ -103,6 +103,16 @@
   width: 100%;
 }
 
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-white);
+}
+
 /* ─── Bottom Bar ────────────────────────────────────────── */
 .bottomBar {
   background: var(--color-dark);

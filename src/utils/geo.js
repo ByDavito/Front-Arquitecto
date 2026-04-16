@@ -106,17 +106,15 @@ export function formatCityData(apiCity) {
 
   // Calcular bounds si el API proporciona información de límites
   let bounds = null;
-  if (apiCity.Bounds) {
-    // Formato: Bounds = [[minLng, minLat], [maxLng, maxLat]]
-    bounds = apiCity.Bounds;
-  } else if (apiCity.BoundNE && apiCity.BoundSW) {
-    // Alternativa: bounds definidos como corner northeast y southwest
+  // El API retorna: BoundsSWLat, BoundsSWLng, BoundsNELat, BoundsNELng
+  if (apiCity.BoundsSWLat && apiCity.BoundsSWLng && apiCity.BoundsNELat && apiCity.BoundsNELng) {
+    // Formato: [[minLng, minLat], [maxLng, maxLat]]
     bounds = [
-      [parseFloat(apiCity.BoundSW[0]), parseFloat(apiCity.BoundSW[1])],
-      [parseFloat(apiCity.BoundNE[0]), parseFloat(apiCity.BoundNE[1])]
+      [parseFloat(apiCity.BoundsSWLng), parseFloat(apiCity.BoundsSWLat)],
+      [parseFloat(apiCity.BoundsNELng), parseFloat(apiCity.BoundsNELat)]
     ];
   } else if (apiCity.CenterLat && apiCity.CenterLng && apiCity.Radius) {
-    // Crear bounds desde centro y radio
+    // Crear bounds desde centro y radio (fallback)
     const centerLat = parseFloat(apiCity.CenterLat);
     const centerLng = parseFloat(apiCity.CenterLng);
     const radius = parseFloat(apiCity.Radius);

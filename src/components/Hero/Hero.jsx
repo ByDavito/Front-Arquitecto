@@ -5,6 +5,7 @@ import hero1 from '../../assets/img/hero1.png'
 import hero2 from '../../assets/img/hero2.png'
 import hero3 from '../../assets/img/hero3.png'
 import hero4 from '../../assets/img/hero4.png'
+import hero5 from '../../assets/img/hero5.png'
 import styles from './Hero.module.css'
 
 const SLIDES = [
@@ -12,6 +13,7 @@ const SLIDES = [
   { src: hero2, alt: 'Obra arquitectónica 2' },
   { src: hero3, alt: 'Obra arquitectónica 3' },
   { src: hero4, alt: 'Obra arquitectónica 4' },
+  { src: hero5, alt: 'Obra arquitectónica 5' },
 ]
 
 const INTERVAL = 5000

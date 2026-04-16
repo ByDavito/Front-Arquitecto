@@ -1,19 +1,28 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './FloatingWhatsAppButton.module.css';
 import { useMapLoadingContext } from '../../context/MapLoadingContext';
 
 /**
  * FloatingWhatsAppButton - Botón flotante de WhatsApp que sigue el scroll
  * Permite contactar al arquitecto directamente vía WhatsApp
- * Aparece con delay de 3s después de que termina la carga del mapa
+ * Aparece con delay de 3s después de termina la carga del mapa
  */
 function FloatingWhatsAppButton() {
   const { isMapLoading } = useMapLoadingContext();
   const [isVisible, setIsVisible] = useState(false);
+  const location = useLocation();
 
-  // Número de WhatsApp del arquitecto - cambiar según sea necesario
-  const phoneNumber = '5493510000000';
-  const message = 'Hola, me interesa conocer más sobre tus trabajos de arquitectura.';
+  const phoneNumber = '5493562443899';
+  
+  const isDetailPage = location.pathname.startsWith('/obra/');
+  
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  
+  const message = isDetailPage
+    ? `Hola estoy interesado en esta obra...\n\n${currentUrl}`
+    : 'Hola, me interesa conocer más sobre tus trabajos de arquitectura.';
+  
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
   // Mostrar el botón 3 segundos después de que termina la carga

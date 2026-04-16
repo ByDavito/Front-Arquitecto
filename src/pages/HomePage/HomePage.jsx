@@ -1,4 +1,5 @@
 import Hero from '../../components/Hero/Hero';
+import ConceptSection from '../../components/ConceptSection/ConceptSection';
 import MapSection from '../../components/MapSection/MapSection';
 import Footer from '../../components/Footer/Footer';
 import { useMapLoadingContext } from '../../context/MapLoadingContext';
@@ -14,6 +15,7 @@ function HomePage({ isMapLoading = false, isMapLoadingEnding = false }) {
   return (
     <main>
       <Hero isMapLoading={isMapLoading} isMapLoadingEnding={isMapLoadingEnding} />
+      <ConceptSection />
       <MapSection onMapReady={setMapReady} />
       <Footer />
     </main>

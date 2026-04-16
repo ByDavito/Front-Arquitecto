@@ -98,9 +98,7 @@ function GridOverlay({ mapRef, cityBounds, isActive, setIsActive, minZoom, isMob
         })}
         
         {/* Textos decorativos de la imagen original */}
-        <div className={styles.cornerText} style={{top: '10px', left: '10px'}}>idea</div>
-        <div className={styles.cornerText} style={{top: '10px', right: '10px'}}>info</div>
-        <div className={styles.cornerText} style={{bottom: '10px', left: '10px'}}>contacto</div>
+        
       </div>
 
       {/* Botón cerrar para activación del mapa */}

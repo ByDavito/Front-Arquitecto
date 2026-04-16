@@ -1,0 +1,392 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: transparent;
+  color: var(--color-white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  z-index: 1;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Contenedor con fondo sólido para el contenido */
+.contentBox {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  background: #1a1a1ace;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3xl);
+  z-index: 1;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+/* Grid decorativo dentro del contentBox */
+.contentBox .gridPattern {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  opacity: 0.06;
+}
+
+.contentBox .gridLine {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-white) 20%,
+    var(--color-white) 80%,
+    transparent 100%
+  );
+  animation: gridPulse 3s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+/* Línea central decorativa dentro del contentBox */
+.contentBox .centerLine {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-red) 30%,
+    var(--color-red) 70%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+/* Grid decorativo de fondo */
+.gridPattern {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  opacity: 0.08;
+}
+
+.gridLine {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-white) 20%,
+    var(--color-white) 80%,
+    transparent 100%
+  );
+  animation: gridPulse 3s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Línea central decorativa */
+.centerLine {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-red) 30%,
+    var(--color-red) 70%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-xl);
+  z-index: 2;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-3xl);
+  align-items: start;
+}
+
+.titleBlock {
+  text-align: center;
+  animation: fadeInUp 0.8s ease 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-red);
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: var(--spacing-lg);
+}
+
+.highlight {
+  color: var(--color-red);
+}
+
+.underline {
+  width: 80px;
+  height: 3px;
+  background: var(--color-red);
+  margin: 0 auto;
+}
+
+.description {
+  animation: fadeInUp 0.8s ease 0.4s both;
+}
+
+.intro {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--color-gray);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--spacing-3xl);
+}
+
+/* Concepts Cards */
+.concepts {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-3xl);
+  flex-wrap: wrap;
+}
+
+.conceptCard {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  padding: var(--spacing-2xl);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: all 0.4s ease;
+}
+
+.conceptCard:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.conceptIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--spacing-lg);
+  color: var(--color-red);
+}
+
+.conceptIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.conceptTitle {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--color-white);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-md);
+}
+
+.conceptText {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--color-gray);
+}
+
+.conceptDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-md);
+}
+
+.conceptDivider span {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-red);
+  opacity: 0.6;
+}
+
+/* Conclusión */
+.conclusion {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--spacing-2xl);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.conclusionText {
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.8;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-xl);
+}
+
+.conclusionText strong {
+  color: var(--color-red);
+  font-weight: 500;
+}
+
+.detailText {
+  font-size: 0.95rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--color-gray);
+}
+
+/* Brújula decorativa */
+.compassDecor {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(150px, 20vw, 250px);
+  height: clamp(150px, 20vw, 250px);
+  color: var(--color-white);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.compassSvg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Indicador de scroll */
+.scrollHint {
+  position: absolute;
+  bottom: var(--spacing-2xl);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  color: var(--color-gray);
+  animation: bounce 2s ease infinite;
+  z-index: 10;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+.scrollHint span {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scrollHint svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .compassDecor {
+    display: none;
+  }
+
+  .concepts {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .conceptCard {
+    width: 100%;
+  }
+
+  .conceptDivider {
+    padding: var(--spacing-lg) 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding: var(--spacing-2xl) 0;
+    min-height: auto;
+  }
+
+  .container {
+    padding: 0 var(--spacing-lg);
+  }
+
+  .conceptCard {
+    padding: var(--spacing-xl);
+  }
+
+  .conclusion {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .scrollHint {
+    display: none;
+  }
+}

@@ -31,7 +31,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-  /* Leve zoom para efecto Ken Burns */
   transform: scale(1.04);
   transition: transform 6s ease;
 }
