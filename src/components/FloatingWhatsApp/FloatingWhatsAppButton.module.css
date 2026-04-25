@@ -64,10 +64,10 @@
 /* Media query para móviles */
 @media (max-width: 768px) {
   .floatingButton {
-    bottom: 20px;
+    bottom: 150px;
     right: 20px;
-    width: 55px;
-    height: 55px;
+    width: 65px;
+    height: 65px;
   }
 
   .icon {

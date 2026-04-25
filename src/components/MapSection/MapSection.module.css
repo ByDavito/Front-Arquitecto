@@ -11,6 +11,9 @@
 @media (max-width: 768px) {
   .mapSection {
     display: block;
+    padding-top: 0rem;
+    padding-bottom: 5rem;
+    height: auto;
   }
 }
 

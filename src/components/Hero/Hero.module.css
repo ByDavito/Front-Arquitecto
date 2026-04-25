@@ -88,7 +88,7 @@
 /* ─── Content ─────────────────────────────────────────────── */
 .content {
   position: absolute;
-  inset: 0;
+  inset: 400px 0px;
   z-index: 5;
   display: flex;
   flex-direction: column;
@@ -101,11 +101,20 @@
 }
 
 .logo {
-  width: clamp(200px, 35vw, 480px);
-  height: auto;
-  filter: brightness(0) invert(1) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
-  transition: opacity var(--transition-normal), transform 0.3s ease;
-  transform: scale(1);
+   width: clamp(250px, 35vw, 200px);
+   height: auto;
+   filter: brightness(0) invert(1) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
+   transition: opacity var(--transition-normal), transform 0.3s ease;
+   transform: scale(1);
+}
+
+/* Texto arriba a la izquierda */
+.topLeftText {
+   position: absolute;
+   top: var(--spacing-xl);
+   left: var(--spacing-xl);
+   text-align: left;
+   z-index: 6;
 }
 
 /* Animación breathing para el logo mientras carga el mapa */
@@ -177,26 +186,60 @@
 }
 
 .tagline {
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  letter-spacing: 0.25em;
-  color: var(--color-white);
-  text-transform: uppercase;
-  margin-top: var(--spacing-md);
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.8s ease 1.2s, transform 0.8s ease 1.2s;
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 5vw, 7rem);
+    letter-spacing: 0.35em;
+    color: var(--color-white);
+    text-transform: uppercase;
+    margin-top: var(--spacing-md);
+    position: relative;
+
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease 1.2s, transform 0.8s ease 1.2s;
 }
 
-.tagline.hidden {
+.topLeftText .tagline {letter-spacing: 0.2em;}
+/* Keyframes for sliding in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estilos para el tagline en la posición superior izquierda */
+.topLeftText .tagline {
+  /* Estado inicial: oculto y desplazado a la izquierda */
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateX(-100px);
+  /* Animación de entrada */
+  animation: slideInLeft 0.8s ease 1.2s forwards;
+}
+
+/* Cuando está oculto (durante la carga del mapa), anulamos la animación y usamos el estado oculto */
+.topLeftText .tagline.hidden {
+  animation: none;
+  opacity: 0;
+  transform: translateY(10px); /* Mantener la misma transición vertical que el tagline centrado */
+}
+
+/* Estado oculto global para el tagline (usado en el contenido centrado) */
+.tagline.hidden {
+   opacity: 0;
+   transform: translateY(10px);
 }
 
 .subtitle {
   font-size: clamp(0.8rem, 1.5vw, 1rem);
   letter-spacing: 0.3em;
   text-transform: uppercase;
+  position: relative;
+  left: -10px;
   color: var(--color-red);
   font-weight: 500;
   opacity: 1;
@@ -281,6 +324,66 @@
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
+/* Coordenadas abajo a la derecha */
+.bottomRightCoords {
+  position: absolute;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+  text-align: left;
+  z-index: 6;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 1.2s, transform 0.8s ease 1.2s;
+  border-left: 2px solid var(--color-red);
+  padding-left: var(--spacing-xl);
+}
+
+.bottomRightCoords:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.coordHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+
+.coordValue {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 1.5rem);
+  color: var(--color-white);
+  
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-weight: 400;
+  margin-bottom: var(--spacing-sm);
+}
+
+.coordLocation {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 1.5rem);
+  color: var(--color-white);
+
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: var(--spacing-sm);
+}
+
+.coordSubtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  margin-top: var(--spacing-md);
+}
+
 /* ─── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .scrollIndicator {
@@ -288,5 +391,18 @@
   }
   .content {
     padding: var(--spacing-xl);
+  }
+  
+  .bottomRightCoords {
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+  }
+  
+  .coordTitle {
+    font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  }
+  
+  .coordValue {
+    
   }
 }
