@@ -141,3 +141,47 @@
     gap: var(--spacing-lg);
   }
 }
+
+/* Mobile Specific Adjustments for iPhone SE */
+@media (max-width: 375px) {
+  .footer {
+    padding-top: var(--spacing-2xl);
+  }
+  
+  .grid {
+    gap: var(--spacing-xl);
+  }
+  
+  .logosContainer {
+    gap: var(--spacing-md);
+  }
+  
+  .mediumLogo {
+    height: 45px;
+  }
+  
+  .addressBlock p {
+    font-size: 0.85rem;
+  }
+  
+  .socials {
+    gap: var(--spacing-md);
+  }
+  
+  .socialLink {
+    font-size: 0.75rem;
+  }
+  
+  .contactDetails {
+    font-size: 0.8rem;
+    gap: var(--spacing-xxs);
+  }
+  
+  .bottomBar {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .bottomContent {
+    font-size: 0.65rem;
+  }
+}

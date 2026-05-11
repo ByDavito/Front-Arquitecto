@@ -124,7 +124,7 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
         {/* Texto arriba a la izquierda */}
         <div className={styles.topLeftText}>
           <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Una unidad de</p>
-          <h1 className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`} style={{ fontSize: '1.5rem', marginBottom: '5rem', marginTop: '0rem' }}>DEPETRIS <b style={{ color: 'var(--color-red)' }}>•</b> SARANZ <b style={{ color: 'var(--color-red)' }}>•</b> BOSCHETTO</h1>
+          <h1 className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`} style={{  marginBottom: '5rem', marginTop: '0rem' }}>DEPETRIS <b style={{ color: 'var(--color-red)' }}>•</b> SARANZ <b style={{ color: 'var(--color-red)' }}>•</b> BOSCHETTO</h1>
         </div>
 
         {/* Contenido centrado */}

@@ -8,15 +8,6 @@
   display: flex;
 }
 
-@media (max-width: 768px) {
-  .mapSection {
-    display: block;
-    padding-top: 0rem;
-    padding-bottom: 5rem;
-    height: auto;
-  }
-}
-
 .layoutWithFilters {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -45,12 +36,6 @@
   
   z-index: 10;
   margin: 0 auto; /* Centrado */
-}
-
-@media (min-width: 1024px) {
-  .mapContainer {
-    width: 45vw;
-  }
 }
 
 /* Transición a fullscreen */
@@ -136,15 +121,49 @@
   height: 24px;
 }
 
+/* ─── Mobile ─────────────────────────────────────────── */
 @media (max-width: 768px) {
+  .mapSection {
+    display: block;
+    padding-top: 0rem;
+    padding-bottom: 5rem;
+    height: auto;
+  }
+
   .mapContainer {
     width: 100vw;
   }
+}
 
-  .filterBtn {
-    top: 15px;
-    left: 15px;
-    width: 45px;
-    height: 45px;
+@media (min-width: 1024px) {
+  .mapContainer {
+    width: 45vw;
+    margin: 0 1rem;
+  }
+}
+
+/* ─── iPhone SE and very small screens ──────────────────────────────── */
+@media (max-width: 375px) {
+  .mapSection {
+    padding-top: 0rem;
+    padding-bottom: 3rem;
+  }
+  
+  .mapContainer {
+    min-height: 80vh;
+    width: auto;
+    border-radius: 20px;
+    
+  }
+  
+  
+  .filterBtn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .fullscreen {
+    inset: 0 !important;
+    margin: 0;
   }
 }

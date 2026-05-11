@@ -378,6 +378,10 @@
     padding: 0 var(--spacing-lg);
   }
 
+  .contentBox {
+    padding: var(--spacing-xl);
+  }
+
   .conceptCard {
     padding: var(--spacing-xl);
   }
@@ -388,5 +392,67 @@
 
   .scrollHint {
     display: none;
+  }
+}
+
+/* Mobile Specific Adjustments for iPhone SE */
+@media (max-width: 375px) {
+  .section {
+    padding: var(--spacing-xl) 0;
+  }
+
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+
+  .title {
+    font-size: clamp(2rem, 6vw, 4rem);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .concepts {
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .conceptCard {
+    min-width: 250px;
+    padding: var(--spacing-lg);
+  }
+
+  .conceptTitle {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .conceptText {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .conceptDivider {
+    padding: var(--spacing-md) 0;
+  }
+
+  .conceptDivider span {
+    font-size: 1.5rem;
+  }
+
+  .conclusion {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .conclusionText {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .detailText {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .scrollHint {
+    bottom: var(--spacing-lg);
   }
 }

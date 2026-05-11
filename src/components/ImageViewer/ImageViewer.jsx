@@ -156,7 +156,7 @@ function ImageViewer({ images }) {
               <iframe
                 src={getYouTubeEmbedUrl(mainMedia.url || mainMedia.URL)}
                 title="Video de obra"
-                className={styles.modalImage}
+                className={styles.modalVideo}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -234,30 +234,35 @@ function ImageViewer({ images }) {
                   }}
                   onDragStart={(e) => e.preventDefault()}
                 />
-                <button
-                  className={styles.zoomBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setZoom(Math.max(minZoom, zoom - 0.25));
-                    setDragOffset({ x: 0, y: 0 });
-                  }}
-                  disabled={zoom === minZoom}
-                  title="Zoom out"
-                >
-                  -
-                </button>
-                <button
-                  className={styles.zoomBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setZoom(Math.min(maxZoom, zoom + 0.25));
-                    setDragOffset({ x: 0, y: 0 });
-                  }}
-                  disabled={zoom === maxZoom}
-                  title="Zoom in"
-                >
-                  +
-                </button>
+                {/* Hide zoom buttons on mobile devices */}
+                {!window.matchMedia('(max-width: 768px)').matches && (
+                  <>
+                    <button
+                      className={styles.zoomBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setZoom(Math.max(minZoom, zoom - 0.25));
+                        setDragOffset({ x: 0, y: 0 });
+                      }}
+                      disabled={zoom === minZoom}
+                      title="Zoom out"
+                    >
+                      -
+                    </button>
+                    <button
+                      className={styles.zoomBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setZoom(Math.min(maxZoom, zoom + 0.25));
+                        setDragOffset({ x: 0, y: 0 });
+                      }}
+                      disabled={zoom === maxZoom}
+                      title="Zoom in"
+                    >
+                      +
+                    </button>
+                  </>
+                )}
               </>
             )}
           </div>

@@ -4,7 +4,7 @@
   right: 30px;
   width: 60px;
   height: 60px;
-  background-color: #25d366;
+  background-color: #25d365da;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -64,10 +64,10 @@
 /* Media query para móviles */
 @media (max-width: 768px) {
   .floatingButton {
-    bottom: 150px;
+    bottom: 10vh;
     right: 20px;
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
   }
 
   .icon {

@@ -52,7 +52,7 @@
   max-width: 400px;
   height: auto;
   max-height: 80vh;
-  
+  position: fixed;
   left: 50%;
   opacity: 0;
   transform: translate(-50%, -100%);
@@ -64,7 +64,7 @@
 
 .filterPanel.mobile.open {
   opacity: 1;
-  transform: translate(-50%, 30%);
+  transform: translate(-50%, 80%);
 }
 
 .header {
