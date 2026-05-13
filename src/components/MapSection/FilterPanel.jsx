@@ -8,8 +8,7 @@ import styles from './FilterPanel.module.css';
  * FilterPanel — Panel lateral/superior de filtros para el mapa.
  * Incluye filtros por barrio, tipo de obra, patio, cochera, habitaciones, baños y rangos de m².
  */
-function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile }) {
-  const { works } = useWorks();
+function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile, works }) {
 
   // Estados locales para los filtros
   const [barrio, setBarrio] = useState('');
@@ -55,7 +54,7 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile }) {
     return barrioOptions.filter(b => b.toLowerCase().includes(barrio.toLowerCase()));
   }, [barrio, barrioOptions]);
 
-  // Aplicar filtros
+  // Aplicar filtros y cerrar el panel (solo en móvil)
   const handleApplyFilters = () => {
     const filters = {
       barrio: barrio.trim(),
@@ -68,6 +67,7 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile }) {
       banos: banos ? Number(banos) : null
     };
     onApplyFilters(filters);
+    if (isMobile) onClose();
   };
 
   // Limpiar filtros
@@ -342,10 +342,10 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile }) {
       </div>
 
       <div className={styles.footer}>
-        <button className={styles.clearBtn} onClick={handleClearFilters}>
+        <button type="button" className={styles.clearBtn} onClick={handleClearFilters}>
           Limpiar
         </button>
-        <button className={styles.applyBtn} onClick={handleApplyFilters}>
+        <button type="button" className={styles.applyBtn} onClick={handleApplyFilters}>
           Aplicar filtros
         </button>
       </div>

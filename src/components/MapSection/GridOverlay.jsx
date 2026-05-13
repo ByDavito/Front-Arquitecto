@@ -103,6 +103,7 @@ function GridOverlay({ mapRef, cityBounds, isActive, setIsActive, minZoom, isMob
 
       {/* Botón cerrar para activación del mapa */}
       <button
+        type="button"
         className={`${styles.closeBtn} ${isActive ? styles.closeVisible : ''}`}
         onClick={handleClose}
         aria-label="Cerrar mapa"

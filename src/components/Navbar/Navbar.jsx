@@ -46,13 +46,13 @@ function Navbar({ isMapLoading = false }) {
           {isHome && (
             <>
               <li>
-                <button onClick={() => scrollTo('hero')}>Inicio</button>
+                <button type="button" onClick={() => scrollTo('hero')}>Inicio</button>
               </li>
               <li>
-                <button onClick={() => scrollTo('mapa')}>Obras</button>
+                <button type="button" onClick={() => scrollTo('mapa')}>Obras</button>
               </li>
               <li>
-                <button onClick={() => scrollTo('footer')}>Contacto</button>
+                <button type="button" onClick={() => scrollTo('footer')}>Contacto</button>
               </li>
             </>
           )}
@@ -63,6 +63,7 @@ function Navbar({ isMapLoading = false }) {
 
         {/* Hamburguesa mobile */}
         <button
+          type="button"
           className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menú"

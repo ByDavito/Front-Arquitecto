@@ -6,6 +6,7 @@
   padding-bottom: 10rem;
   position: relative;
   display: flex;
+  justify-content: center;
 }
 
 .layoutWithFilters {
@@ -46,7 +47,11 @@
   height: 100dvh !important;
   z-index: 2000; /* Por encima del navbar */
   min-height: auto;
-  margin: 0;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .mapWrapper {
@@ -131,14 +136,15 @@
   }
 
   .mapContainer {
-    width: 100vw;
+    width: 95%;
+    margin: 0 2.5%;
   }
 }
 
 @media (min-width: 1024px) {
   .mapContainer {
     width: 45vw;
-    margin: 0 1rem;
+    
   }
 }
 

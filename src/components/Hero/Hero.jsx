@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import logoImg from '../../assets/img/Logo sin nombre.png'
+import logoImg from '../../assets/img/Logo Cordinales.png'
 // Hero images — reemplazar con reales del cliente
 import hero1 from '../../assets/img/hero1.png'
 import hero2 from '../../assets/img/hero2.png'
@@ -92,7 +92,15 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
             `}
             aria-hidden={i !== current}
           >
-            <img src={slide.src} alt={slide.alt} />
+            <img
+              src={slide.src}
+              alt={slide.alt}
+              loading={i === current ? 'eager' : 'lazy'}
+              decoding="async"
+              width="1920"
+              height="1080"
+              style={{ aspectRatio: '16/9' }}
+            />
           </div>
         ))}
         {/* Overlay oscuro para legibilidad */}
@@ -103,16 +111,7 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
 
 
         {/* Dots — visibles solo en hover */}
-        <div className={`${styles.dots} ${hovered ? styles.dotsVisible : ''}`}>
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className={`${styles.dot} ${i === current ? styles.dotActive : ''}`}
-              onClick={() => goTo(i)}
-              aria-label={`Ir a imagen ${i + 1}`}
-            />
-          ))}
-        </div>
+        
 
         {/* Indicador de scroll */}
         <div className={styles.scrollIndicator}>
@@ -132,9 +131,11 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
           <img 
             src={logoImg} 
             alt="Depetris Saranz Boschetto" 
+            loading="lazy"
+            decoding="async"
             className={`${styles.logo} ${isMapLoading ? styles.logoBreathing : ''} ${isMapLoadingEnding ? styles.logoBreathingEnding : ''}`} 
           />
-          <p className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Cordinales</p>
+          <p className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Coordenadas | Cardinales</p>
           <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>desarrollos inmobiliarios</p>
         </div>
 

@@ -22,23 +22,21 @@ function WorkDetailPage() {
     return getNearbyWorks(work, works, 5); // top 5 más cercanas
   }, [work, works]);
 
-  console.log('Obra actual:', work);
-
   // Pantallas de estado global
   if (loadingWork) return <div className={styles.stateScreen}><div className="skeleton" style={{width: '200px', height: '40px'}}/></div>;
   if (errorWork) return <div className={styles.stateScreen}><p className="errorText">Error: {errorWork}</p><Link to="/">← Volver al inicio</Link></div>;
-  if (!work) return <div className={styles.stateScreen}><p>Obra no encontrada.</p><Link to="/">← Volver al inicio</Link></div>;
+  if (!work) return <div className={styles.stateScreen}><p>Obra no encontrado.</p><Link to="/">← Volver al inicio</Link></div>;
 
   return (
     <>
       <main className={styles.detailPage}>
         <div className={`container ${styles.gridContainer}`}>
-          
+
           {/* Columna Principal: Galería e Información */}
           <section className={styles.mainColumn}>
             {/* Nav & Breadcrumb */}
             <nav className={styles.breadcrumb}>
-              <Link to="/">Inicio</Link> 
+              <Link to="/">Inicio</Link>
               <span className={styles.separator}>/</span>
               <span className={styles.current}>{work.Nombre}</span>
             </nav>

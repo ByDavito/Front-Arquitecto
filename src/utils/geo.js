@@ -90,7 +90,8 @@ export function workToMapPoint(work) {
     title: work.Nombre,
     description: work.Descripcion,
     image: work.medios?.[0]?.imageData || formatImageUrl(work.medios?.[0]?.Url),
-    work, // referencia completa para uso en onPointClick
+    // No incluimos el objeto completo 'work' para reducir memoria por marker
+    workId: work.id, // solo el ID como referencia ligera
   };
 }
 

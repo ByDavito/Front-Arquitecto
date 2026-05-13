@@ -34,32 +34,40 @@ function MapSection({ onMapReady }) {
   // Filtrar obras según filtros aplicados
   const filteredWorks = useFilteredWorks(works, filters);
 
-  // Convertimos las obras filtradas a puntos del mapa y calculamos el centro ideal
-  const { points, cityBounds } = useMemo(() => {
-    const mapPoints = (filteredWorks || [])
-      .filter((w) => w.Latitud && w.Longitud)
-      .map(workToMapPoint);
-
+  // Los bounds del mapa dependen de TODAS las obras (no filtradas) y de las ciudades.
+  // NO deben cambiar al aplicar filtros — solo los marcadores aparecen/desaparecen.
+  const cityBounds = useMemo(() => {
     let bounds = null;
 
     // Prioridad 1: Usar datos de la primera ciudad del API
     if (cities && cities.length > 0) {
       bounds = formatCityData(cities[0]);
-      console.log('City data from API:', cities[0], 'Formatted bounds:', bounds);
     }
 
     // Prioridad 2: Calcular a partir de las obras (si no hay ciudad en el API)
     if (!bounds && works && works.length > 0) {
       bounds = getCityFromWorks(works);
-      console.log('Bounds calculated from works:', bounds);
     }
 
-    console.log('Final cityBounds:', bounds);
+    return bounds;
+  }, [cities, works]);
 
-    return { points: mapPoints, cityBounds: bounds };
-  }, [filteredWorks, cities]);
+  // Puntos del mapa sí dependen de los filtros
+  const points = useMemo(() => {
+    return (filteredWorks || [])
+      .filter((w) => w.Latitud && w.Longitud)
+      .map(workToMapPoint);
+  }, [filteredWorks]);
 
-  // Notificar cuando el mapa esté listo
+  // Preservar posición de scroll al aplicar filtros en móvil
+  const mapSectionRef = useRef(null);
+  const prevFiltersRef = useRef(null);
+  useEffect(() => {
+    if (prevFiltersRef.current !== null && isMobile && mapSectionRef.current) {
+      mapSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    prevFiltersRef.current = filters;
+  }, [filters, isMobile]);
   useEffect(() => {
     if (!loading && cityBounds && onMapReady) {
       // Pequeño delay para que la transición sea visible
@@ -97,25 +105,20 @@ function MapSection({ onMapReady }) {
 
     // Aplicar maxBounds para restringir movimiento
     if (cityBounds.bounds && map.setMaxBounds) {
-      // Convertir array a formato LatLngBounds si es necesario
       const bounds = cityBounds.bounds;
-      // bounds formato: [[lng, lat], [lng, lat]]
-      const sw = bounds[0]; // [lng, lat]
+      const sw = bounds[0];
       const ne = bounds[1];
-      
-      // Crear el objeto de bounds en formato leaflet
+
       if (map.L && map.L.latLngBounds) {
         map.setMaxBounds(map.L.latLngBounds([
-          [sw[1], sw[0]], // [lat, lng] para Leaflet
+          [sw[1], sw[0]],
           [ne[1], ne[0]]
         ]));
       } else {
-        // Intentar directamente
         map.setMaxBounds(bounds);
       }
     }
 
-    // Aplicar restricciones de zoom (minZoom y maxZoom)
     if (cityBounds.minZoom && map.setMinZoom) {
       map.setMinZoom(cityBounds.minZoom);
     }
@@ -123,63 +126,60 @@ function MapSection({ onMapReady }) {
       map.setMaxZoom(cityBounds.maxZoom);
     }
 
-    // Escuchar eventos de movimiento para mantener las restricciones
+    // Un solo listener en moveend (cubre drag + zoom + pan) con debounce
+    let rafId = null;
     const enforceBounds = () => {
       if (!map || !cityBounds.bounds) return;
-      
-      // Verificar y corregir el zoom
-      if (cityBounds.minZoom && map.getZoom() < cityBounds.minZoom) {
-        map.setZoom(cityBounds.minZoom);
-      }
-      if (cityBounds.maxZoom && map.getZoom() > cityBounds.maxZoom) {
-        map.setZoom(cityBounds.maxZoom);
-      }
 
-      // Verificar y corregir la posición si está fuera de los bounds
-      const bounds = cityBounds.bounds;
-      const southWest = bounds[0]; // [lng, lat]
-      const northEast = bounds[1];
-      
-      let needsCorrection = false;
-      let newCenter = map.getCenter();
-      
-      // Verificar latitud
-      if (newCenter.lat < southWest[1]) {
-        newCenter.lat = southWest[1];
-        needsCorrection = true;
-      }
-      if (newCenter.lat > northEast[1]) {
-        newCenter.lat = northEast[1];
-        needsCorrection = true;
-      }
-      
-      // Verificar longitud
-      if (newCenter.lng < southWest[0]) {
-        newCenter.lng = southWest[0];
-        needsCorrection = true;
-      }
-      if (newCenter.lng > northEast[0]) {
-        newCenter.lng = northEast[0];
-        needsCorrection = true;
-      }
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
 
-      if (needsCorrection) {
-        map.setCenter(newCenter);
-      }
+        if (cityBounds.minZoom && map.getZoom() < cityBounds.minZoom) {
+          map.setZoom(cityBounds.minZoom);
+        }
+        if (cityBounds.maxZoom && map.getZoom() > cityBounds.maxZoom) {
+          map.setZoom(cityBounds.maxZoom);
+        }
+
+        const bounds = cityBounds.bounds;
+        const southWest = bounds[0];
+        const northEast = bounds[1];
+
+        let needsCorrection = false;
+        let newCenter = map.getCenter();
+
+        if (newCenter.lat < southWest[1]) {
+          newCenter.lat = southWest[1];
+          needsCorrection = true;
+        }
+        if (newCenter.lat > northEast[1]) {
+          newCenter.lat = northEast[1];
+          needsCorrection = true;
+        }
+        if (newCenter.lng < southWest[0]) {
+          newCenter.lng = southWest[0];
+          needsCorrection = true;
+        }
+        if (newCenter.lng > northEast[0]) {
+          newCenter.lng = northEast[0];
+          needsCorrection = true;
+        }
+
+        if (needsCorrection) {
+          map.setCenter(newCenter);
+        }
+      });
     };
 
-    // Agregar listeners para verificar restricciones en cada movimiento
     if (map.on) {
       map.on('moveend', enforceBounds);
-      map.on('zoomend', enforceBounds);
-      map.on('dragend', enforceBounds);
     }
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       if (map.off) {
         map.off('moveend', enforceBounds);
-        map.off('zoomend', enforceBounds);
-        map.off('dragend', enforceBounds);
       }
     };
   }, [cityBounds]);
@@ -198,6 +198,7 @@ function MapSection({ onMapReady }) {
 
   return (
     <section
+      ref={mapSectionRef}
       className={`${styles.mapSection}`}
     >
       {/* Panel de filtros */}
@@ -206,6 +207,7 @@ function MapSection({ onMapReady }) {
         onClose={closeFilterPanel}
         onApplyFilters={setFilters}
         isMobile={isMobile}
+        works={works}
       />
 
     <div id="mapa"
