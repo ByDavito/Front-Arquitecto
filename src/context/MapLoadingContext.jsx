@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-
-const MapLoadingContext = createContext(null);
+import { MapLoadingContext } from './mapContext';
 
 /**
  * MapLoadingProvider — Proveedor de contexto para el estado de carga del mapa.
@@ -37,18 +36,21 @@ export function MapLoadingProvider({ children }) {
 
   // Resetear estado cuando se navega a la página de detalle
   useEffect(() => {
-    if (!isHomePage) {
-      setIsMapLoading(false);
-      setIsMapReady(false);
-      setIsMapLoadingEnding(false);
-      // Restaurar scroll
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    } else if (!isMapReady) {
-      setIsMapLoading(true);
-    }
-  }, [location.pathname]);
+    const timer = setTimeout(() => {
+      if (!isHomePage) {
+        setIsMapLoading(false);
+        setIsMapReady(false);
+        setIsMapLoadingEnding(false);
+        // Restaurar scroll
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
+      } else if (!isMapReady) {
+        setIsMapLoading(true);
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [location.pathname, isHomePage, isMapReady]);
 
   // Bloquear/desbloquear scroll del body según el estado de carga (solo en home)
   useEffect(() => {
@@ -75,15 +77,4 @@ export function MapLoadingProvider({ children }) {
       {children}
     </MapLoadingContext.Provider>
   );
-}
-
-/**
- * Hook para acceder al contexto de carga del mapa
- */
-export function useMapLoadingContext() {
-  const context = useContext(MapLoadingContext);
-  if (!context) {
-    throw new Error('useMapLoadingContext must be used within a MapLoadingProvider');
-  }
-  return context;
 }

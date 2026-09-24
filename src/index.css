@@ -8,8 +8,6 @@
    Tipografía: Inter (cuerpo) + Bebas Neue (títulos)
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&display=swap');
-
 /* ─── CSS Variables ─────────────────────────────────────── */
 :root {
   --color-black:        #1A1A1A;

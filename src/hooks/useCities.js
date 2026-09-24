@@ -17,7 +17,6 @@ export function useCities() {
         setCities(data);
         setError(null);
       } catch (err) {
-        console.error('Error fetching cities:', err);
         setError(err.message);
       } finally {
         setLoading(false);

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { BedDouble, Toilet } from 'lucide-react';
 import { Range } from 'react-range';
-import { useWorks } from '../../hooks/useWorks';
 import styles from './FilterPanel.module.css';
 
 /**
@@ -87,8 +86,11 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile, works }) {
 
   // Actualizar rangos cuando cambian los datos
   useEffect(() => {
-    setM2CubiertaMax(maxM2Cubierta);
-    setM2TotalMax(maxM2Total);
+    const timer = setTimeout(() => {
+      setM2CubiertaMax(maxM2Cubierta);
+      setM2TotalMax(maxM2Total);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [maxM2Cubierta, maxM2Total]);
 
   return (
@@ -118,8 +120,10 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile, works }) {
             {barrioSuggestions.length > 0 && (
               <ul className={styles.suggestions}>
                 {barrioSuggestions.map((suggestion, index) => (
-                  <li key={index} onClick={() => setBarrio(suggestion)}>
-                    {suggestion}
+                  <li key={index}>
+                    <button type="button" onClick={() => setBarrio(suggestion)}>
+                      {suggestion}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -266,7 +270,7 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile, works }) {
                       {children}
                     </div>
                   )}
-                  renderThumb={({ props, isDragged }) => (
+                  renderThumb={({ props }) => (
                     <div
                       {...props}
                       style={{
@@ -320,7 +324,7 @@ function FilterPanel({ isOpen, onClose, onApplyFilters, isMobile, works }) {
                       {children}
                     </div>
                   )}
-                  renderThumb={({ props, isDragged }) => (
+                  renderThumb={({ props }) => (
                     <div
                       {...props}
                       style={{

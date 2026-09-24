@@ -101,7 +101,7 @@
 }
 
 .logo {
-   width: clamp(250px, 35vw, 200px);
+   width: clamp(160px, 35vw, 250px);
    height: auto;
    filter: brightness(0) invert(1) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
    transition: opacity var(--transition-normal), transform 0.3s ease;
@@ -199,9 +199,19 @@
     transition: opacity 0.8s ease 1.2s, transform 0.8s ease 1.2s;
 }
 
-.topLeftText .tagline {letter-spacing: 0.2em;
-  font-size: 1.5rem;
+.topLeftText .tagline b {
+  color: var(--color-red);
 }
+
+.topLeftText .tagline {
+  letter-spacing: 0.2em;
+  font-size: 1.5rem;
+  opacity: 0;
+  transform: translateX(-100px);
+  animation: slideInLeft 0.8s ease 1.2s forwards;
+  margin-bottom: 5rem;
+}
+
 /* Keyframes for sliding in from left */
 @keyframes slideInLeft {
   from {
@@ -212,15 +222,6 @@
     opacity: 1;
     transform: translateX(0);
   }
-}
-
-/* Estilos para el tagline en la posición superior izquierda */
-.topLeftText .tagline {
-  /* Estado inicial: oculto y desplazado a la izquierda */
-  opacity: 0;
-  transform: translateX(-100px);
-  /* Animación de entrada */
-  animation: slideInLeft 0.8s ease 1.2s forwards;
 }
 
 /* Cuando está oculto (durante la carga del mapa), anulamos la animación y usamos el estado oculto */
@@ -274,42 +275,6 @@
    opacity: 0.6;
    border: none;
    box-shadow: 0 0 8px rgba(192, 42, 45, 0.3);
-}
-
-/* ─── Dots ────────────────────────────────────────────────── */
-.dots {
-  position: absolute;
-  bottom: var(--spacing-2xl);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 4;
-  display: flex;
-  gap: var(--spacing-sm);
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.dots.dotsVisible {
-  opacity: 1;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.4);
-  transition: background var(--transition-fast), transform var(--transition-fast);
-  padding: 0;
-}
-
-.dot:hover {
-  background: rgba(255,255,255,0.7);
-  transform: scale(1.2);
-}
-
-.dotActive {
-  background: var(--color-red);
-  transform: scale(1.3);
 }
 
 /* ─── Scroll Indicator ────────────────────────────────────── */
@@ -425,10 +390,6 @@
   .coordTitle {
     font-size: clamp(0.7rem, 1.2vw, 0.85rem);
   }
-  
-  .coordValue {
-    
-  }
 
   .hero {
     min-height: 100dvh;
@@ -446,7 +407,7 @@
   }
   
   .logo {
-    width: clamp(160px, 40vw, 180px);
+    width: clamp(140px, 40vw, 200px);
   }
   
   .topLeftText {
@@ -478,11 +439,7 @@
   .coordSubtitle {
     font-size: clamp(0.6rem, 2vw, 0.75rem);
   }
-  
-  .dots {
-    bottom: var(--spacing-lg);
-  }
-  
+
   .scrollIndicator {
     bottom: var(--spacing-lg);
     right: var(--spacing-lg);

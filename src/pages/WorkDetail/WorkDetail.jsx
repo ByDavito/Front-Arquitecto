@@ -67,12 +67,12 @@ function WorkDetailPage() {
               <div className={styles.specsGrid}>
                 {work.tipoNombre && <SpecItem label="Tipo" value={work.tipoNombre} />}
                 {work.Estado && <SpecItem label="Estado" value={work.Estado} />}
-                {work.SuperficieTotal > 0 && <SpecItem label="Sup. Total" value={`${work.SuperficieTotal} m²`} />}
-                {work.SuperficieCubierta > 0 && <SpecItem label="Sup. Cubierta" value={`${work.SuperficieCubierta} m²`} />}
-                {work.Habitaciones > 0 && <SpecItem label="Habitaciones" value={work.Habitaciones} />}
-                {work.Baños > 0 && <SpecItem label="Baños" value={work.Baños} />}
-                {work.Cochera > 0 && <SpecItem label="Cochera" value={work.Cochera ? 'Sí' : 'No'} />}
-                {work.Patio > 0 && <SpecItem label="Patio" value={work.Patio ? 'Sí' : 'No'} />}
+                {work.SuperficieTotal != null && work.SuperficieTotal > 0 && <SpecItem label="Sup. Total" value={`${work.SuperficieTotal} m²`} />}
+                {work.SuperficieCubierta != null && work.SuperficieCubierta > 0 && <SpecItem label="Sup. Cubierta" value={`${work.SuperficieCubierta} m²`} />}
+                {work.Habitaciones != null && work.Habitaciones > 0 && <SpecItem label="Habitaciones" value={work.Habitaciones} />}
+                {work.Banos != null && work.Banos > 0 && <SpecItem label="Baños" value={work.Banos} />}
+                {work.Cochera != null && <SpecItem label="Cochera" value={work.Cochera ? 'Sí' : 'No'} />}
+                {work.Patio != null && <SpecItem label="Patio" value={work.Patio ? 'Sí' : 'No'} />}
               </div>
             </article>
           </section>

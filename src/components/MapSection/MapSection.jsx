@@ -10,6 +10,7 @@ import { useCities } from '../../hooks/useCities';
 import { useFilters } from '../../hooks/useFilters';
 import { useFilteredWorks } from '../../hooks/useFilteredWorks';
 import { getCityFromWorks, workToMapPoint, formatCityData } from '../../utils/geo';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import styles from './MapSection.module.css';
 
 /**
@@ -25,8 +26,8 @@ function MapSection({ onMapReady }) {
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
 
-  // Detectar si es móvil basado en ancho de ventana
-  const isMobile = useMemo(() => window.innerWidth < 768, []);
+  // Detectar si es móvil (reactivo a cambios de tamaño/rotación)
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const loading = loadingWorks || loadingCities;
   const error = errorWorks;
@@ -196,6 +197,19 @@ function MapSection({ onMapReady }) {
     }
   };
 
+  // Auto-centrar el mapa de forma suave al hacer hover sobre un punto (solo PC)
+  const handlePointHover = (point) => {
+    if (!mapRef.current || !point) return;
+    // En mobile no existe el hover real; el touch activaría drag en el mapa
+    if (isMobile) return;
+
+    mapRef.current.flyTo({
+      center: [point.lng, point.lat],
+      essential: true,
+      duration: 1000
+    });
+  };
+
   return (
     <section
       ref={mapSectionRef}
@@ -247,6 +261,8 @@ function MapSection({ onMapReady }) {
             markerComponent={WorkMarker}
             tooltipComponent={CustomToolTip}
             onPointClick={handlePointClick}
+            onPointHover={handlePointHover}
+            stickyTooltip={!isMobile}
             onMapReady={handleMapReady}
             width="100%"
             height="100%"
@@ -260,7 +276,6 @@ function MapSection({ onMapReady }) {
         isActive={isActive}
         setIsActive={setIsActive}
         minZoom={cityBounds?.minZoom}
-        isMobile={isMobile}
       />
       </div>
     </section>

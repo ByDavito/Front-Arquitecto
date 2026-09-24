@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import logoImg from '../../assets/img/Logo Cordinales.png'
 // Hero images — reemplazar con reales del cliente
-import hero1 from '../../assets/img/hero1.png'
-import hero2 from '../../assets/img/hero2.png'
-import hero3 from '../../assets/img/hero3.jpeg'
-import hero4 from '../../assets/img/hero4.jpeg'
-import hero5 from '../../assets/img/hero5.png'
-import hero6 from '../../assets/img/hero6.jpeg'
+import hero1 from '../../assets/img/webp/hero1.webp'
+import hero2 from '../../assets/img/webp/hero2.webp'
+import hero3 from '../../assets/img/webp/hero3.webp'
+import hero4 from '../../assets/img/webp/hero4.webp'
+import hero5 from '../../assets/img/webp/hero5.webp'
+import hero6 from '../../assets/img/webp/hero6.webp'
 import { MapPin } from 'lucide-react'
 import styles from './Hero.module.css'
 
@@ -34,15 +34,13 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
   const [scrolled, setScrolled] = useState(false)
   const timerRef = useRef(null)
 
-  const goTo = (index) => {
-    setPrev(current)
-    setCurrent(index)
-  }
-
-  const next = () => {
-    const nextIdx = (current + 1) % SLIDES.length
-    goTo(nextIdx)
-  }
+  const next = useCallback(() => {
+    setCurrent((c) => {
+      const nextIdx = (c + 1) % SLIDES.length
+      setPrev(c)
+      return nextIdx
+    })
+  }, [])
 
   // Auto-avance — pausa cuando el usuario hace hover
   useEffect(() => {
@@ -52,7 +50,7 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
       timerRef.current = setInterval(next, INTERVAL)
     }
     return () => clearInterval(timerRef.current)
-  }, [hovered, current])
+  }, [hovered, next])
 
   // Limpiar "prev" tras la transición para no anidar infinitamente
   useEffect(() => {
@@ -99,6 +97,7 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
               decoding="async"
               width="1920"
               height="1080"
+              fetchPriority={i === 0 ? 'high' : 'auto'}
               style={{ aspectRatio: '16/9' }}
             />
           </div>
@@ -110,20 +109,22 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
 
 
 
-        {/* Dots — visibles solo en hover */}
-        
-
         {/* Indicador de scroll */}
-        <div className={styles.scrollIndicator}>
+        <button
+          type="button"
+          className={styles.scrollIndicator}
+          onClick={() => document.getElementById('mapa')?.scrollIntoView({ behavior: 'smooth' })}
+          aria-label="Ir al mapa de obras"
+        >
           <span />
           <p>Explorar</p>
-        </div>
+        </button>
       </div>
 
         {/* Texto arriba a la izquierda */}
         <div className={styles.topLeftText}>
           <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Una unidad de</p>
-          <h1 className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`} style={{  marginBottom: '5rem', marginTop: '0rem' }}>DEPETRIS <b style={{ color: 'var(--color-red)' }}>•</b> SARANZ <b style={{ color: 'var(--color-red)' }}>•</b> BOSCHETTO</h1>
+          <h1 className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>DEPETRIS <b>•</b> SARANZ <b>•</b> BOSCHETTO</h1>
         </div>
 
         {/* Contenido centrado */}

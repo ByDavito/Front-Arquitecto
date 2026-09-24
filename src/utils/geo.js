@@ -103,8 +103,6 @@ export function workToMapPoint(work) {
 export function formatCityData(apiCity) {
   if (!apiCity) return null;
 
-  console.log(apiCity.Zoom);
-
   // Calcular bounds si el API proporciona información de límites
   let bounds = null;
   // El API retorna: BoundsSWLat, BoundsSWLng, BoundsNELat, BoundsNELng

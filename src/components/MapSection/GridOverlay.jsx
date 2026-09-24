@@ -1,12 +1,11 @@
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback } from 'react';
 import styles from './GridOverlay.module.css';
 
 /**
  * GridOverlay — Interfaz 3x3 que divide el mapa.
  * Al hacer click en una celda, hace flyTo a esa zona y activa el mapa.
  */
-function GridOverlay({ mapRef, cityBounds, isActive, setIsActive, minZoom, isMobile }) {
+function GridOverlay({ mapRef, cityBounds, isActive, setIsActive, minZoom }) {
   // Las letras para el diseño N O C E S de la imagen de referencia.
   // 1: N, 2: blank, 3: blank
   // 4: O, 5: C, 6: E

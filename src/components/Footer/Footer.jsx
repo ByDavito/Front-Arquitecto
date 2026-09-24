@@ -1,6 +1,5 @@
 import logoNegro from '../../assets/img/Logo PNG Negro.png';
 import logoDebsa from '../../assets/img/DeBSA.png';
-import logoCardinales from '../../assets/img/Logo Cordinales 01.png';
 import styles from './Footer.module.css';
 
 /**

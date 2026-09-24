@@ -6,7 +6,7 @@ import styles from './WorkMarker.module.css';
  * Un pin arquitectónico minimalista.
  * Envuelto en React.memo para evitar re-renders innecesarios.
  */
-const WorkMarker = memo(function WorkMarker({ point }) {
+const WorkMarker = memo(function WorkMarker() {
   return (
     <div className={styles.customMarker}></div>
   );

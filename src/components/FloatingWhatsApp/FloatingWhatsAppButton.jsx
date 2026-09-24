@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './FloatingWhatsAppButton.module.css';
-import { useMapLoadingContext } from '../../context/MapLoadingContext';
+import { useMapLoadingContext } from '../../context/mapContext';
 
 /**
  * FloatingWhatsAppButton - Botón flotante de WhatsApp que sigue el scroll
@@ -27,14 +27,14 @@ function FloatingWhatsAppButton() {
 
   // Mostrar el botón 3 segundos después de que termina la carga
   useEffect(() => {
-    if (!isMapLoading) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 3000);
+    if (isMapLoading) {
+      const timer = setTimeout(() => setIsVisible(false), 0);
       return () => clearTimeout(timer);
-    } else {
-      setIsVisible(false);
     }
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, [isMapLoading]);
 
   return (

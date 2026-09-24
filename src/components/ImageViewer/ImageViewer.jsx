@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatImageUrl } from '../../utils/geo';
+import { createThumbnail } from '../../utils/image';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 import styles from './ImageViewer.module.css';
 
 /**
@@ -22,32 +24,63 @@ function getYouTubeThumbnailUrl(url) {
   return match ? `https://img.youtube.com/vi/${match[1]}/0.jpg` : '';
 }
 
+/** Caché de miniaturas generadas (evita recomputar al alternar modal/galería) */
+const thumbnailCache = new Map();
+
+/**
+ * useThumbnail — Genera (una vez) una miniatura reducida de una imagen base64.
+ * Las URLs externas se devuelven tal cual.
+ */
+function useThumbnail(src) {
+  const [thumb, setThumb] = useState(() => thumbnailCache.get(src) ?? null);
+
+  useEffect(() => {
+    if (thumbnailCache.has(src)) return;
+    let cancelled = false;
+    createThumbnail(src, 200).then((t) => {
+      thumbnailCache.set(src, t);
+      if (!cancelled) setThumb(t);
+    });
+    return () => { cancelled = true; };
+  }, [src]);
+
+  return thumb;
+}
+
+/** Botón de miniatura con imagen reduzida */
+function ThumbnailButton({ src, label, active, onClick, isVideo }) {
+  const thumb = useThumbnail(src);
+  return (
+    <button
+      className={`${styles.thumbnailBtn} ${active ? styles.thumbnailActive : ''}`}
+      onClick={onClick}
+      aria-label={label}
+    >
+      {thumb && (
+        <img src={thumb} alt="" className={styles.thumbnailImg} loading="lazy" width="100" height="60" />
+      )}
+      {isVideo && <div className={styles.videoIcon}>▶</div>}
+    </button>
+  );
+}
+
 /**
  * ImageViewer — Visor de imágenes con galería de miniaturas.
  * Click en miniatura cambia la principal de forma suave.
  */
 function ImageViewer({ images }) {
-  if (!images || images.length === 0) {
-    return (
-      <div className={styles.emptyState}>
-        <p>No hay imágenes disponibles para esta obra.</p>
-      </div>
-    );
-  }
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const minZoom = 1.0;
   const maxZoom = 2.0;
   const [zoom, setZoom] = useState(1.0);
+  const isMobile = useMediaQuery('(max-width: 768px)');
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
   const [isPinching, setIsPinching] = useState(false);
   const [initialPinchDistance, setInitialPinchDistance] = useState(0);
   const [initialPinchZoom, setInitialPinchZoom] = useState(1.0);
-  const mainMedia = images[currentIndex];
-  const isVideo = mainMedia.tipo === 'video' || (mainMedia.url || mainMedia.URL) && !mainMedia.imageData;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -61,10 +94,25 @@ function ImageViewer({ images }) {
 
   useEffect(() => {
     if (!isModalOpen) {
-      setZoom(1.0);
-      setDragOffset({ x: 0, y: 0 });
+      const t = setTimeout(() => {
+        setZoom(1.0);
+        setDragOffset({ x: 0, y: 0 });
+      }, 0);
+      return () => clearTimeout(t);
     }
   }, [isModalOpen]);
+
+  if (!images || images.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <p>No hay imágenes disponibles para esta obra.</p>
+      </div>
+    );
+  }
+
+  // undefined para los tokens por defecto; se evita el hook condicional
+  const mainMedia = images[currentIndex] ?? {};
+  const isVideo = mainMedia.tipo === 'video' || (mainMedia.url || mainMedia.URL) && !mainMedia.imageData;
 
   const handlePrev = () => {
     setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
@@ -125,21 +173,18 @@ function ImageViewer({ images }) {
         <div className={styles.thumbnailContainer}>
           {images.map((media, idx) => {
             const isVideoThumb = media.tipo === 'video' || (media.url || media.URL) && !media.imageData;
+            const src = isVideoThumb
+              ? getYouTubeThumbnailUrl(media.url || media.URL)
+              : (media.imageData || formatImageUrl(media.Url));
             return (
-              <button
-                key={media.id}
-                className={`${styles.thumbnailBtn} ${idx === currentIndex ? styles.thumbnailActive : ''}`}
+              <ThumbnailButton
+                key={`${media.id}-${idx}`}
+                src={src}
+                isVideo={isVideoThumb}
+                active={idx === currentIndex}
+                label={`Ver ${isVideoThumb ? 'video' : 'imagen'} ${idx + 1}`}
                 onClick={(e) => { e.stopPropagation(); setCurrentIndex(idx); }}
-                aria-label={`Ver ${isVideoThumb ? 'video' : 'imagen'} ${idx + 1}`}
-              >
-                <img
-                  src={isVideoThumb ? getYouTubeThumbnailUrl(media.url || media.URL) : (media.imageData || formatImageUrl(media.Url))}
-                  alt=""
-                  className={styles.thumbnailImg}
-                  loading="lazy"
-                />
-                {isVideoThumb && <div className={styles.videoIcon}>▶</div>}
-              </button>
+              />
             );
           })}
         </div>
@@ -149,7 +194,7 @@ function ImageViewer({ images }) {
     {/* Modal */}
     {isModalOpen && (
       <div className={styles.modal} onClick={() => setIsModalOpen(false)}>
-        <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>×</button>
+        <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)} aria-label="Cerrar visor">×</button>
         <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
           <div className={styles.imageWrapper}>
             {isVideo ? (
@@ -235,7 +280,7 @@ function ImageViewer({ images }) {
                   onDragStart={(e) => e.preventDefault()}
                 />
                 {/* Hide zoom buttons on mobile devices */}
-                {!window.matchMedia('(max-width: 768px)').matches && (
+                {!isMobile && (
                   <>
                     <button
                       className={styles.zoomBtn}
@@ -296,21 +341,18 @@ function ImageViewer({ images }) {
           >
             {images.map((media, idx) => {
               const isVideoThumb = media.tipo === 'video' || (media.url || media.URL) && !media.imageData;
+              const src = isVideoThumb
+                ? getYouTubeThumbnailUrl(media.url || media.URL)
+                : (media.imageData || formatImageUrl(media.Url));
               return (
-                <button
-                  key={media.id}
-                  className={`${styles.thumbnailBtn} ${idx === currentIndex ? styles.thumbnailActive : ''}`}
+                <ThumbnailButton
+                  key={`${media.id}-${idx}`}
+                  src={src}
+                  isVideo={isVideoThumb}
+                  active={idx === currentIndex}
+                  label={`Ver ${isVideoThumb ? 'video' : 'imagen'} ${idx + 1}`}
                   onClick={() => setCurrentIndex(idx)}
-                  aria-label={`Ver ${isVideoThumb ? 'video' : 'imagen'} ${idx + 1}`}
-                >
-                  <img
-                    src={isVideoThumb ? getYouTubeThumbnailUrl(media.url || media.URL) : (media.imageData || formatImageUrl(media.Url))}
-                    alt=""
-                    className={styles.thumbnailImg}
-                    loading="lazy"
-                  />
-                  {isVideoThumb && <div className={styles.videoIcon}>▶</div>}
-                </button>
+                />
               );
             })}
           </div>

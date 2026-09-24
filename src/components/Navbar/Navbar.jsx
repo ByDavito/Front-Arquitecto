@@ -25,7 +25,10 @@ function Navbar({ isMapLoading = false }) {
   }, [])
 
   // Cerrar menú al cambiar de ruta
-  useEffect(() => { setMenuOpen(false) }, [location])
+  useEffect(() => {
+    const t = setTimeout(() => setMenuOpen(false), 0);
+    return () => clearTimeout(t);
+  }, [location])
 
   const scrollTo = (id) => {
     const el = document.getElementById(id)
