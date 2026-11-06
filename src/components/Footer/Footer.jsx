@@ -21,7 +21,7 @@ function Footer() {
           </div>
           
           <div className={styles.addressBlock}>
-            <p><strong>coordenadas | cardinales</strong></p>
+            <p><strong>Estudio DSB</strong></p>
             <p>orientamos tu inversión</p>
           </div>
           

@@ -124,10 +124,7 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
       </div>
 
         {/* Texto arriba a la izquierda */}
-        <div className={styles.topLeftText}>
-          <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Una unidad de</p>
-          <h1 className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>DEPETRIS <b>•</b> SARANZ <b>•</b> BOSCHETTO</h1>
-        </div>
+        
 
         {/* Contenido centrado */}
         <div className={styles.content} >
