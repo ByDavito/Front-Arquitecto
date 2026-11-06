@@ -124,6 +124,16 @@
   max-height: 80%;
   object-fit: contain;
   transition: transform 0.3s ease;
+  transform-origin: center;
+  user-select: none;
+  -webkit-user-drag: none;
+  touch-action: none;
+}
+
+/* Sin transición mientras se arrastra: el movimiento sigue 1:1 al puntero. */
+.modalImageDragging {
+  transition: none;
+  will-change: transform;
 }
 
 .modalVideo {

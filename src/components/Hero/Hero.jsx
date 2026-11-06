@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import logoImg from '../../assets/img/Logo Cordinales.png'
+import logoStudio from '../../assets/img/Logo DSB.png'
+import logoDebsa from '../../assets/img/Logo DeBSA.png'
+
 // Hero images — reemplazar con reales del cliente
 import hero1 from '../../assets/img/webp/hero1.webp'
 import hero2 from '../../assets/img/webp/hero2.webp'
@@ -129,14 +131,22 @@ function Hero({ isMapLoading = false, isMapLoadingEnding = false }) {
 
         {/* Contenido centrado */}
         <div className={styles.content} >
-          <img 
-            src={logoImg} 
-            alt="Depetris Saranz Boschetto" 
-            loading="lazy"
-            decoding="async"
-            className={`${styles.logo} ${isMapLoading ? styles.logoBreathing : ''} ${isMapLoadingEnding ? styles.logoBreathingEnding : ''}`} 
-          />
-          <p className={`${styles.tagline} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>Coordenadas | Cardinales</p>
+          <div className={`${styles.logos} ${isMapLoading ? styles.logoBreathing : ''} ${isMapLoadingEnding ? styles.logoBreathingEnding : ''}`}>
+            <img
+              src={logoStudio}
+              alt="Depetris Saranz Boschetto"
+              loading="lazy"
+              decoding="async"
+              className={styles.logo}
+            />
+            <img
+              src={logoDebsa}
+              alt="DeBSA Desarrollistas"
+              loading="lazy"
+              decoding="async"
+              className={styles.logoSecondary}
+            />
+          </div>
           <p className={`${styles.subtitle} ${isMapLoading && !isMapLoadingEnding ? styles.hidden : ''}`}>desarrollos inmobiliarios</p>
         </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import logoImg from '../../assets/img/Logo Cordinales.png'
+import logoImg from '../../assets/img/Logo DSB.png'
 import styles from './Navbar.module.css'
 
 /**

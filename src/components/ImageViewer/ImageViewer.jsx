@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { formatImageUrl } from '../../utils/geo';
 import { createThumbnail } from '../../utils/image';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
@@ -77,10 +77,141 @@ function ImageViewer({ images }) {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [startDrag, setStartDrag] = useState({ x: 0, y: 0 });
-  const [isPinching, setIsPinching] = useState(false);
-  const [initialPinchDistance, setInitialPinchDistance] = useState(0);
-  const [initialPinchZoom, setInitialPinchZoom] = useState(1.0);
+
+  // Refs de gestos: evitan depender del re-render entre pointerdown/pointermove.
+  const imageRef = useRef(null);
+  const wrapperRef = useRef(null);
+  const draggingRef = useRef(false);
+  const activePointerRef = useRef(null);
+  const dragStartRef = useRef({ x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  const offsetRef = useRef({ x: 0, y: 0 });
+  const touchPointsRef = useRef(new Map());
+  const pinchRef = useRef({ active: false, distance: 0, zoom: 1 });
+  const zoomRef = useRef(1);
+
+  useEffect(() => { zoomRef.current = zoom; }, [zoom]);
+  useEffect(() => { offsetRef.current = dragOffset; }, [dragOffset]);
+
+  /** Limita el desplazamiento para que la imagen no se salga del visor. */
+  const clampOffset = useCallback((x, y, z = zoomRef.current) => {
+    const img = imageRef.current;
+    const wrap = wrapperRef.current;
+    if (!img || !wrap) return { x, y };
+
+    const maxX = Math.max(0, (img.offsetWidth * z - wrap.clientWidth) / 2);
+    const maxY = Math.max(0, (img.offsetHeight * z - wrap.clientHeight) / 2);
+
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y)),
+    };
+  }, []);
+
+  // Al cambiar el zoom, reajustamos el offset a los nuevos límites.
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const next = clampOffset(offsetRef.current.x, offsetRef.current.y, zoom);
+    if (next.x !== offsetRef.current.x || next.y !== offsetRef.current.y) {
+      offsetRef.current = next;
+      setDragOffset(next);
+    }
+  }, [zoom, isModalOpen, clampOffset]);
+
+  const handlePointerDown = (e) => {
+    if (e.pointerType === 'touch') {
+      touchPointsRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (touchPointsRef.current.size === 2) {
+        const [a, b] = [...touchPointsRef.current.values()];
+        pinchRef.current = {
+          active: true,
+          distance: Math.hypot(a.x - b.x, a.y - b.y),
+          zoom: zoomRef.current,
+        };
+        draggingRef.current = false;
+        setIsDragging(false);
+        return;
+      }
+
+      if (touchPointsRef.current.size > 2) return;
+    }
+
+    if (zoomRef.current <= minZoom) return;
+
+    draggingRef.current = true;
+    activePointerRef.current = e.pointerId;
+    dragStartRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      offsetX: offsetRef.current.x,
+      offsetY: offsetRef.current.y,
+    };
+    setIsDragging(true);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    if (e.pointerType === 'touch' && touchPointsRef.current.has(e.pointerId)) {
+      touchPointsRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      if (pinchRef.current.active) {
+        const [a, b] = [...touchPointsRef.current.values()];
+        if (a && b) {
+          const distance = Math.hypot(a.x - b.x, a.y - b.y);
+          const nextZoom = Math.min(
+            maxZoom,
+            Math.max(minZoom, pinchRef.current.zoom * (distance / pinchRef.current.distance))
+          );
+          setZoom(nextZoom);
+          if (nextZoom <= minZoom) {
+            offsetRef.current = { x: 0, y: 0 };
+            setDragOffset({ x: 0, y: 0 });
+          }
+        }
+        return;
+      }
+    }
+
+    if (!draggingRef.current || activePointerRef.current !== e.pointerId) return;
+
+    const next = clampOffset(
+      dragStartRef.current.offsetX + (e.clientX - dragStartRef.current.x),
+      dragStartRef.current.offsetY + (e.clientY - dragStartRef.current.y)
+    );
+    offsetRef.current = next;
+    setDragOffset(next);
+  };
+
+  const handlePointerEnd = (e) => {
+    if (e.pointerType === 'touch') {
+      touchPointsRef.current.delete(e.pointerId);
+
+      if (touchPointsRef.current.size < 2) {
+        pinchRef.current.active = false;
+      }
+
+      // Si queda un dedo apoyado, continuamos el paneo sin saltos.
+      if (touchPointsRef.current.size === 1 && zoomRef.current > minZoom) {
+        const [remainingId, remaining] = [...touchPointsRef.current.entries()][0];
+        activePointerRef.current = remainingId;
+        dragStartRef.current = {
+          x: remaining.x,
+          y: remaining.y,
+          offsetX: offsetRef.current.x,
+          offsetY: offsetRef.current.y,
+        };
+        draggingRef.current = true;
+        setIsDragging(true);
+        return;
+      }
+    }
+
+    if (activePointerRef.current === e.pointerId) {
+      draggingRef.current = false;
+      activePointerRef.current = null;
+      setIsDragging(false);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -96,11 +227,21 @@ function ImageViewer({ images }) {
     if (!isModalOpen) {
       const t = setTimeout(() => {
         setZoom(1.0);
+        offsetRef.current = { x: 0, y: 0 };
         setDragOffset({ x: 0, y: 0 });
       }, 0);
       return () => clearTimeout(t);
     }
   }, [isModalOpen]);
+
+  // Al cambiar de imagen, volvemos al encuadre original.
+  useEffect(() => {
+    setZoom(1.0);
+    offsetRef.current = { x: 0, y: 0 };
+    setDragOffset({ x: 0, y: 0 });
+    draggingRef.current = false;
+    setIsDragging(false);
+  }, [currentIndex]);
 
   if (!images || images.length === 0) {
     return (
@@ -196,7 +337,7 @@ function ImageViewer({ images }) {
       <div className={styles.modal} onClick={() => setIsModalOpen(false)}>
         <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)} aria-label="Cerrar visor">×</button>
         <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-          <div className={styles.imageWrapper}>
+          <div className={styles.imageWrapper} ref={wrapperRef}>
             {isVideo ? (
               <iframe
                 src={getYouTubeEmbedUrl(mainMedia.url || mainMedia.URL)}
@@ -209,74 +350,18 @@ function ImageViewer({ images }) {
             ) : (
               <>
                 <img
+                  ref={imageRef}
                   src={mainMedia.imageData || formatImageUrl(mainMedia.Url)}
                   alt=""
-                  className={styles.modalImage}
+                  className={`${styles.modalImage} ${isDragging ? styles.modalImageDragging : ''}`}
                   style={{
-                    transform: `scale(${zoom}) translate(${dragOffset.x}px, ${dragOffset.y}px)`,
+                    transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) scale(${zoom})`,
                     cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in'
                   }}
-                  onMouseDown={(e) => {
-                    if (zoom > 1) {
-                      setIsDragging(true);
-                      setStartDrag({ x: e.clientX - dragOffset.x, y: e.clientY - dragOffset.y });
-                    }
-                  }}
-                  onMouseMove={(e) => {
-                    if (isDragging) {
-                      let newX = e.clientX - startDrag.x;
-                      let newY = e.clientY - startDrag.y;
-                      const maxDrag = 200 * (zoom - 1);
-                      newX = Math.max(-maxDrag, Math.min(maxDrag, newX));
-                      newY = Math.max(-maxDrag, Math.min(maxDrag, newY));
-                      setDragOffset({ x: newX, y: newY });
-                    }
-                  }}
-                  onMouseUp={() => setIsDragging(false)}
-                  onMouseLeave={() => setIsDragging(false)}
-                  onTouchStart={(e) => {
-                    if (e.touches.length === 2) {
-                      // Start pinch
-                      const touch1 = e.touches[0];
-                      const touch2 = e.touches[1];
-                      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-                      setIsPinching(true);
-                      setInitialPinchDistance(distance);
-                      setInitialPinchZoom(zoom);
-                    } else if (e.touches.length === 1 && zoom > 1) {
-                      // Start drag
-                      const touch = e.touches[0];
-                      setIsDragging(true);
-                      setStartDrag({ x: touch.clientX - dragOffset.x, y: touch.clientY - dragOffset.y });
-                    }
-                  }}
-                  onTouchMove={(e) => {
-                    if (isPinching && e.touches.length === 2) {
-                      e.preventDefault();
-                      const touch1 = e.touches[0];
-                      const touch2 = e.touches[1];
-                      const distance = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-                      const scale = distance / initialPinchDistance;
-                      setZoom(Math.min(maxZoom, Math.max(minZoom, initialPinchZoom * scale)));
-                    } else if (isDragging && e.touches.length === 1) {
-                      e.preventDefault(); // Prevent scroll
-                      const touch = e.touches[0];
-                      let newX = touch.clientX - startDrag.x;
-                      let newY = touch.clientY - startDrag.y;
-                      const maxDrag = 200 * (zoom - 1);
-                      newX = Math.max(-maxDrag, Math.min(maxDrag, newX));
-                      newY = Math.max(-maxDrag, Math.min(maxDrag, newY));
-                      setDragOffset({ x: newX, y: newY });
-                    }
-                  }}
-                  onTouchEnd={(e) => {
-                    if (e.touches.length < 2) {
-                      setIsPinching(false);
-                    }
-                    if (e.touches.length < 1) {
-                      setIsDragging(false);
-                    }
-                  }}
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerEnd}
+                  onPointerCancel={handlePointerEnd}
                   onDragStart={(e) => e.preventDefault()}
                 />
                 {/* Hide zoom buttons on mobile devices */}
@@ -286,8 +371,9 @@ function ImageViewer({ images }) {
                       className={styles.zoomBtn}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setZoom(Math.max(minZoom, zoom - 0.25));
+                        offsetRef.current = { x: 0, y: 0 };
                         setDragOffset({ x: 0, y: 0 });
+                        setZoom(Math.max(minZoom, zoom - 0.25));
                       }}
                       disabled={zoom === minZoom}
                       title="Zoom out"
@@ -298,8 +384,9 @@ function ImageViewer({ images }) {
                       className={styles.zoomBtn}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setZoom(Math.min(maxZoom, zoom + 0.25));
+                        offsetRef.current = { x: 0, y: 0 };
                         setDragOffset({ x: 0, y: 0 });
+                        setZoom(Math.min(maxZoom, zoom + 0.25));
                       }}
                       disabled={zoom === maxZoom}
                       title="Zoom in"

@@ -100,12 +100,33 @@
   animation: fadeIn 1s ease forwards;
 }
 
+.logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2px, 5vw, 0px);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+/* Ambos logos se dimensionan por altura para que queden ópticamente parejos,
+   ya que tienen proporciones distintas (wordmark ancho vs. emblema más cuadrado). */
+.logo,
+.logoSecondary {
+  width: auto;
+  object-fit: contain;
+  transform: scale(1);
+  filter: drop-shadow(0 3px 18px rgba(0, 0, 0, 0.35));
+  transition: opacity var(--transition-normal), transform 0.3s ease;
+}
+
 .logo {
-   width: clamp(160px, 35vw, 250px);
-   height: auto;
-   filter: brightness(0) invert(1) drop-shadow(0 4px 24px rgba(0,0,0,0.5));
-   transition: opacity var(--transition-normal), transform 0.3s ease;
-   transform: scale(1);
+  height: clamp(92px, 13.5vw, 182px);
+  margin-left: -30px;
+}
+
+.logoSecondary {
+  height: clamp(70px, 10.5vw, 138px);
 }
 
 /* Texto arriba a la izquierda */
@@ -243,7 +264,6 @@
   text-transform: uppercase;
   position: relative;
   margin-top: 0px;
-  left: -10px;
   color: var(--color-red);
   font-weight: 500;
   opacity: 1;
@@ -406,8 +426,16 @@
     gap: var(--spacing-sm);
   }
   
+  .logos {
+    gap: clamp(16px, 5vw, 32px);
+  }
+
   .logo {
-    width: clamp(140px, 40vw, 200px);
+    height: clamp(110px, 17vw, 180px);
+  }
+
+  .logoSecondary {
+    height: clamp(100px, 13vw, 78px);
   }
   
   .topLeftText {

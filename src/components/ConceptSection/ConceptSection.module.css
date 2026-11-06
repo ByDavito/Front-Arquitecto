@@ -25,10 +25,10 @@
 .contentBox {
   position: relative;
   width: 100%;
-  max-width: var(--max-width);
+  max-width: 1120px;
   background: #1a1a1ace;
   border-radius: var(--radius-lg);
-  padding: var(--spacing-3xl);
+  padding: clamp(2.5rem, 6vw, 5rem);
   z-index: 1;
   box-shadow: var(--shadow-xl);
   overflow: hidden;
@@ -121,22 +121,16 @@
   opacity: 0.3;
 }
 
-.container {
+.content {
   position: relative;
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--spacing-xl);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
   z-index: 2;
 }
 
-.content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-3xl);
-  align-items: start;
-}
-
+/* ─── Título ─────────────────────────────────────────────── */
 .titleBlock {
   text-align: center;
   animation: fadeInUp 0.8s ease 0.2s both;
@@ -154,24 +148,37 @@
 }
 
 .label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md);
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.34em;
   text-transform: uppercase;
   color: var(--color-red);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.label::before,
+.label::after {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
 }
 
 .title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(2.1rem, 5.2vw, 4.4rem);
   font-weight: 400;
   color: var(--color-white);
-  letter-spacing: 0.05em;
-  line-height: 1;
-  margin-bottom: var(--spacing-lg);
+  letter-spacing: 0.02em;
+  line-height: 1.02;
+  max-width: 20ch;
+  margin: 0 auto var(--spacing-lg);
+  text-wrap: balance;
 }
 
 .highlight {
@@ -179,135 +186,165 @@
 }
 
 .underline {
-  width: 80px;
-  height: 3px;
+  width: 72px;
+  height: 2px;
   background: var(--color-red);
   margin: 0 auto;
 }
 
+/* ─── Texto ──────────────────────────────────────────────── */
 .description {
   animation: fadeInUp 0.8s ease 0.4s both;
 }
 
 .intro {
-  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
   font-weight: 300;
-  line-height: 1.8;
-  color: var(--color-gray);
+  line-height: 1.75;
+  color: var(--color-gray-light);
   text-align: center;
-  max-width: 700px;
-  margin: 0 auto var(--spacing-3xl);
+  max-width: 760px;
+  margin: 0 auto var(--spacing-xl);
+  text-wrap: pretty;
 }
 
-/* Concepts Cards */
-.concepts {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-3xl);
-  flex-wrap: wrap;
-}
-
-.conceptCard {
-  flex: 1;
-  min-width: 280px;
-  max-width: 400px;
-  padding: var(--spacing-2xl);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-lg);
-  text-align: center;
-  transition: all 0.4s ease;
-}
-
-.conceptCard:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
-}
-
-.conceptIcon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto var(--spacing-lg);
-  color: var(--color-red);
-}
-
-.conceptIcon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.conceptTitle {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 400;
-  color: var(--color-white);
-  letter-spacing: 0.05em;
-  margin-bottom: var(--spacing-md);
-}
-
-.conceptText {
-  font-size: 0.95rem;
-  font-weight: 300;
-  line-height: 1.7;
-  color: var(--color-gray);
-}
-
-.conceptDivider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--spacing-md);
-}
-
-.conceptDivider span {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--color-red);
-  opacity: 0.6;
-}
-
-/* Conclusión */
-.conclusion {
-  max-width: 800px;
+.bodyText {
+  max-width: 720px;
   margin: 0 auto;
   text-align: center;
-  padding: var(--spacing-2xl);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--color-gray);
 }
 
-.conclusionText {
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  font-weight: 400;
-  line-height: 1.8;
+.bodyText p + p {
+  margin-top: var(--spacing-lg);
+}
+
+.intro strong,
+.bodyText strong {
   color: var(--color-white);
-  margin-bottom: var(--spacing-xl);
-}
-
-.conclusionText strong {
-  color: var(--color-red);
   font-weight: 500;
 }
 
-.detailText {
-  font-size: 0.95rem;
-  font-weight: 300;
-  line-height: 1.8;
+/* ─── Marcas ─────────────────────────────────────────────── */
+.brands {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  max-width: 820px;
+  margin: var(--spacing-3xl) auto;
+  padding: var(--spacing-2xl) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brandCard {
+  text-align: center;
+  min-width: 0;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--color-white);
+  margin: 0;
+}
+
+.brandNameMuted {
+  display: block;
+  margin-top: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
   color: var(--color-gray);
 }
 
-/* Brújula decorativa */
+.brandRule {
+  display: block;
+  width: 34px;
+  height: 2px;
+  background: var(--color-red);
+  margin: var(--spacing-md) auto;
+}
+
+.brandDisciplines {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.95rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+}
+
+.brandDisciplines span {
+  position: relative;
+}
+
+.brandDisciplines span + span::before {
+  content: '·';
+  position: absolute;
+  left: -0.55rem;
+  color: var(--color-red);
+}
+
+.brandDivider {
+  width: 1px;
+  height: 76px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-red) 50%,
+    transparent 100%
+  );
+  opacity: 0.7;
+}
+
+/* ─── Cierre ─────────────────────────────────────────────── */
+.conclusion {
+  text-align: center;
+  padding-top: var(--spacing-xl);
+}
+
+.conclusionLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+  margin-bottom: var(--spacing-md);
+}
+
+.conclusionText {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 6vw, 3.9rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+/* ─── Brújula decorativa ─────────────────────────────────── */
 .compassDecor {
   position: absolute;
-  right: 5%;
+  right: 3%;
   top: 50%;
   transform: translateY(-50%);
   width: clamp(150px, 20vw, 250px);
   height: clamp(150px, 20vw, 250px);
   color: var(--color-white);
-  opacity: 0.15;
+  opacity: 0.12;
   pointer-events: none;
 }
 
@@ -316,7 +353,7 @@
   height: 100%;
 }
 
-/* Indicador de scroll */
+/* ─── Indicador de scroll ────────────────────────────────── */
 .scrollHint {
   position: absolute;
   bottom: var(--spacing-2xl);
@@ -348,111 +385,85 @@
   height: 24px;
 }
 
-/* Responsive */
+/* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
+  .section {
+    min-height: auto;
+  }
+
   .compassDecor {
     display: none;
   }
 
-  .concepts {
-    flex-direction: column;
-    align-items: center;
+  .brands {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
   }
 
-  .conceptCard {
-    width: 100%;
+  .brandDivider {
+    width: 70px;
+    height: 1px;
+    margin: 0 auto;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      var(--color-red) 50%,
+      transparent 100%
+    );
   }
 
-  .conceptDivider {
-    padding: var(--spacing-lg) 0;
+  .scrollHint {
+    display: none;
   }
 }
 
 @media (max-width: 600px) {
   .section {
     padding: var(--spacing-2xl) 0;
-    min-height: auto;
-  }
-
-  .container {
-    padding: 0 var(--spacing-lg);
   }
 
   .contentBox {
     padding: var(--spacing-xl);
   }
 
-  .conceptCard {
-    padding: var(--spacing-xl);
+  .label {
+    font-size: 0.64rem;
+    letter-spacing: 0.26em;
   }
 
-  .conclusion {
+  .title {
+    font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+  }
+
+  .brands {
+    margin: var(--spacing-2xl) auto;
     padding: var(--spacing-xl) 0;
   }
 
-  .scrollHint {
-    display: none;
+  .conclusionText {
+    letter-spacing: 0.14em;
   }
 }
 
-/* Mobile Specific Adjustments for iPhone SE */
 @media (max-width: 375px) {
   .section {
     padding: var(--spacing-xl) 0;
   }
 
-  .container {
-    padding: 0 var(--spacing-md);
-  }
-
-  .title {
-    font-size: clamp(2rem, 6vw, 4rem);
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .concepts {
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-2xl);
-  }
-
-  .conceptCard {
-    min-width: 250px;
+  .contentBox {
     padding: var(--spacing-lg);
   }
 
-  .conceptTitle {
-    font-size: 1.5rem;
-    margin-bottom: var(--spacing-md);
+  .title {
+    font-size: clamp(1.7rem, 8vw, 2.2rem);
   }
 
-  .conceptText {
-    font-size: 0.85rem;
-    line-height: 1.6;
+  .brandName {
+    font-size: 1.7rem;
   }
 
-  .conceptDivider {
-    padding: var(--spacing-md) 0;
-  }
-
-  .conceptDivider span {
-    font-size: 1.5rem;
-  }
-
-  .conclusion {
-    padding: var(--spacing-lg) 0;
-  }
-
-  .conclusionText {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    margin-bottom: var(--spacing-lg);
-  }
-
-  .detailText {
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-
-  .scrollHint {
-    bottom: var(--spacing-lg);
+  .brandDisciplines {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
   }
 }
